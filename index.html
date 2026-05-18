@@ -579,7 +579,27 @@ function loadAllData() {
       const data = JSON.parse(saved);
 
       habits = Array.isArray(data.habits) ? data.habits : [];
-      allTasks = data.allTasks || {};
+
+      // Support old weekTasks format
+      if (data.allTasks) {
+        allTasks = data.allTasks;
+      } else if (data.weekTasks) {
+        allTasks = {};
+
+        const ws = getWeekStart();
+
+        Object.entries(data.weekTasks).forEach(([dayIdx, tasks]) => {
+          const d = addDays(ws, parseInt(dayIdx));
+          const key = fmtDateISO(d);
+
+          if (!allTasks[key]) {
+            allTasks[key] = tasks;
+          }
+        });
+      } else {
+        allTasks = {};
+      }
+
       events = Array.isArray(data.events) ? data.events : [];
 
       currentQuoteIdx =
@@ -597,11 +617,82 @@ function loadAllData() {
       });
 
       return;
+
     } catch (e) {
       console.error('Error loading saved data:', e);
     }
   }
 
+  /* DEFAULT DATA */
+
+  habits = [
+    {
+      id: 1,
+      name: 'Morning Run',
+      cat: 'Fitness',
+      color: '#ff6b35',
+      checks: {}
+    },
+    {
+      id: 2,
+      name: 'Meditation',
+      cat: 'Mindfulness',
+      color: '#7c6fff',
+      checks: {}
+    },
+    {
+      id: 3,
+      name: 'Read 30min',
+      cat: 'Learning',
+      color: '#00ff9d',
+      checks: {}
+    },
+    {
+      id: 4,
+      name: 'Cold Shower',
+      cat: 'Health',
+      color: '#00e5ff',
+      checks: {}
+    }
+  ];
+
+  events = [
+    {
+      id: 1,
+      title: 'Team standup',
+      date: fmtDate(today),
+      start: '09:00',
+      end: '09:30',
+      repeat: 'weekdays',
+      color: '#2979ff',
+      notes: ''
+    },
+    {
+      id: 2,
+      title: 'Gym session',
+      date: fmtDate(today),
+      start: '07:00',
+      end: '08:00',
+      repeat: 'daily',
+      color: '#00ff9d',
+      notes: ''
+    },
+    {
+      id: 3,
+      title: 'Project deadline',
+      date: fmtDate(addDays(today, 3)),
+      start: '17:00',
+      end: '18:00',
+      repeat: 'none',
+      color: '#ff6b35',
+      notes: 'Submit final deck'
+    }
+  ];
+
+  allTasks = {};
+
+  saveAllData();
+}
   /* DEFAULT DATA ONLY IF ABSOLUTELY NOTHING EXISTS */
 
   habits = [
