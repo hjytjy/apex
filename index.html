@@ -278,9 +278,19 @@ nav{display:flex;align-items:center;padding:0 28px;height:52px;border-bottom:1px
     padding: 12px;
   }
 
-  .tracker-main {
-    grid-template-columns: 1fr;
-  }
+ .tracker-main {
+    display: block;
+    overflow-x: auto;
+}
+
+.grid-area {
+    overflow-x: auto;
+    width: 100%;
+}
+
+.grid-inner {
+    min-width: 900px;
+}
 
   .habit-sidebar,
   .analysis-sidebar {
