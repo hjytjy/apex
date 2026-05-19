@@ -24,10 +24,145 @@
   --text3: #3a3a58;
   --w1: #00c853; --w2: #2979ff; --w3: #d500f9; --w4: #ff6d00;
   --r: 8px; --r2: 14px;
+  --sidebar-width: 260px;
+  --sidebar-collapsed-width: 70px;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scrollbar-width:thin;scrollbar-color:var(--s4) var(--bg);}
 body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+/* Sidebar Styles */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: var(--sidebar-width);
+  background: rgba(8,8,16,0.98);
+  backdrop-filter: blur(20px);
+  border-right: 1px solid var(--b1);
+  z-index: 1000;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateX(0);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar.collapsed {
+  transform: translateX(calc(var(--sidebar-collapsed-width) - var(--sidebar-width)));
+}
+
+.sidebar-toggle {
+  position: fixed;
+  left: 16px;
+  top: 12px;
+  width: 36px;
+  height: 36px;
+  background: var(--s3);
+  border: 1px solid var(--b2);
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-size: 20px;
+  transition: all 0.2s;
+}
+
+.sidebar-toggle:hover {
+  background: var(--accent);
+  color: #000;
+  border-color: var(--accent);
+}
+
+.sidebar-header {
+  padding: 24px 20px;
+  border-bottom: 1px solid var(--b1);
+  margin-top: 20px;
+}
+
+.sidebar-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: 3px;
+  color: var(--accent);
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--text2);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.sidebar-item:hover {
+  background: var(--s2);
+  color: var(--text);
+}
+
+.sidebar-item.active {
+  background: rgba(0, 255, 157, 0.1);
+  color: var(--accent);
+  border-left: 2px solid var(--accent);
+}
+
+.sidebar-item-icon {
+  font-size: 20px;
+  min-width: 28px;
+}
+
+.sidebar-item-text {
+  white-space: nowrap;
+}
+
+.sidebar.collapsed .sidebar-item-text,
+.sidebar.collapsed .sidebar-header h3 {
+  display: none;
+}
+
+.sidebar.collapsed .sidebar-header {
+  text-align: center;
+  padding: 20px 12px;
+}
+
+.sidebar.collapsed .sidebar-logo {
+  font-size: 24px;
+}
+
+.sidebar-footer {
+  padding: 20px;
+  border-top: 1px solid var(--b1);
+  font-size: 10px;
+  color: var(--text3);
+  text-align: center;
+}
+
+/* Main Content */
+.main-content {
+  margin-left: var(--sidebar-width);
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 100vh;
+}
+
+.main-content.expanded {
+  margin-left: var(--sidebar-collapsed-width);
+}
 
 /* Prevent zoom on iOS */
 input, select, textarea, button {
@@ -39,13 +174,7 @@ input, select, textarea, button {
   }
 }
 
-nav{display:flex;align-items:center;padding:0 16px;height:52px;border-bottom:1px solid var(--b1);background:rgba(8,8,16,0.97);backdrop-filter:blur(20px);position:sticky;top:0;z-index:200;}
-.logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--accent);margin-right:20px;}
-.nav-tabs{display:flex;gap:2px;overflow-x:auto;flex:1;}
-.ntab{padding:6px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:none;background:none;color:var(--text2);letter-spacing:.5px;transition:all .2s;white-space:nowrap;}
-.ntab.on{background:var(--s3);color:var(--text);}
-.ntab:hover:not(.on){color:var(--text);background:var(--s2);}
-.nav-r{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text3);}
+nav{display:none;}
 
 .page{display:none;}
 .page.on{display:block;}
@@ -90,7 +219,7 @@ nav{display:flex;align-items:center;padding:0 16px;height:52px;border-bottom:1px
 .day-cell.week-sep{border-left:1px solid var(--b1);position:relative;}
 .check-box{width:26px;height:26px;border-radius:6px;border:1.5px solid var(--b2);display:flex;align-items:center;justify-content:center;font-size:10px;transition:all .2s;cursor:pointer;background:rgba(255,255,255,0.02);}
 .check-box.done{border-color:transparent;background:rgba(0,255,157,0.15);transform:scale(1.02);}
-.day-cell.today-col .check-box{box-shadow:0 0 0 2px rgba(0,255,157,0.3);border-color:var(--accent);}
+.day-cell.today-col .check-box{box-shadow:0 0 0 2px rgba(0,255,157,0.4);border-color:var(--accent);background:rgba(0,255,157,0.1);}
 
 .analysis-sidebar{width:100%;border-top:1px solid var(--b1);}
 .analysis-head{height:44px;border-bottom:1px solid var(--b1);display:flex;align-items:center;padding:0 12px;font-size:10px;color:var(--text3);font-weight:600;}
@@ -155,8 +284,6 @@ nav{display:flex;align-items:center;padding:0 16px;height:52px;border-bottom:1px
 .task-txt.done{text-decoration:line-through;color:var(--text3);}
 .task-actions{display:flex;gap:3px;}
 .task-edit-btn, .task-delete-btn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:9px;padding:0 2px;}
-.task-edit-btn:hover{color:var(--accent);}
-.task-delete-btn:hover{color:#ff4444;}
 .add-task-btn{width:100%;padding:8px;background:none;border:none;border-top:1px solid var(--b1);color:var(--text3);font-size:10px;cursor:pointer;font-family:'JetBrains Mono',monospace;}
 
 .cal-wrap{padding:12px;max-width:1600px;margin:0 auto;}
@@ -198,26 +325,7 @@ nav{display:flex;align-items:center;padding:0 16px;height:52px;border-bottom:1px
 .pdot{width:8px;height:8px;border-radius:50%;background:var(--b2);}
 .pdot.done{background:var(--accent);}
 .pomo-task-lbl{font-size:9px;color:var(--text3);font-family:'JetBrains Mono',monospace;text-align:center;margin-bottom:4px;}
-
-.pomo-task-select {
-  width: 100%;
-  background: var(--s3);
-  border: 1px solid var(--b2);
-  border-radius: 8px;
-  padding: 10px 12px;
-  color: var(--text);
-  font-size: 16px;
-  font-family: 'Syne', sans-serif;
-  margin-top: 8px;
-  cursor: pointer;
-  -webkit-appearance: none;
-  appearance: none;
-}
-@media (max-width: 768px) {
-  .pomo-task-select {
-    font-size: 16px;
-  }
-}
+.pomo-task-select{width:100%;background:var(--s3);border:1px solid var(--b2);border-radius:8px;padding:10px 12px;color:var(--text);font-size:16px;font-family:'Syne',sans-serif;margin-top:8px;cursor:pointer;-webkit-appearance:none;appearance:none;}
 .pomo-task-name{font-size:12px;color:var(--text2);text-align:center;margin-top:8px;font-style:italic;}
 
 .custom-time-input{display:none;margin-bottom:15px;text-align:center;padding:10px;background:var(--s2);border-radius:8px;}
@@ -257,159 +365,201 @@ nav{display:flex;align-items:center;padding:0 16px;height:52px;border-bottom:1px
   .month-title{font-size:36px;}
   .mstat-val{font-size:22px;}
   .tracker-wrap, .task-wrap, .cal-wrap, .prod-wrap{padding:20px 28px;}
-  nav{padding:0 28px;}
-  .logo{font-size:26px;margin-right:40px;}
-  .ntab{padding:6px 18px;font-size:12px;}
-  .nav-r{font-size:11px;}
+  .sidebar-toggle{left:20px;top:16px;}
+}
+
+@media (max-width: 767px) {
+  .sidebar {
+    width: 85%;
+    max-width: 280px;
+  }
+  .main-content {
+    margin-left: 0;
+  }
+  .main-content.expanded {
+    margin-left: 0;
+  }
+  .sidebar.collapsed {
+    transform: translateX(-100%);
+  }
+  .sidebar-toggle {
+    left: 12px;
+    top: 12px;
+    z-index: 1002;
+  }
 }
 </style>
 </head>
 <body>
 
-<nav>
-  <div class="logo">APEX</div>
-  <div class="nav-tabs">
-    <button class="ntab on" onclick="gotoPage('tracker',this)">Tracker</button>
-    <button class="ntab" onclick="gotoPage('tasks',this)">Tasks</button>
-    <button class="ntab" onclick="gotoPage('calendar',this)">Calendar</button>
-    <button class="ntab" onclick="gotoPage('productivity',this)">Productivity</button>
-  </div>
-  <div class="nav-r" id="nav-date"></div>
-</nav>
+<!-- Sidebar Toggle Button -->
+<button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">☰</button>
 
-<div class="page on" id="page-tracker">
-<div class="tracker-wrap">
-  <div class="month-header">
-    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-      <div class="month-title" id="tracker-month-title"></div>
-      <div class="month-nav">
-        <button class="mnav-btn" onclick="trackerNav(-1)">&#8249;</button>
-        <button class="mnav-btn" onclick="trackerNav(1)">&#8250;</button>
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">APEX</div>
+  </div>
+  <div class="sidebar-nav">
+    <div class="sidebar-item active" data-page="tracker" onclick="gotoSidebarPage('tracker',this)">
+      <span class="sidebar-item-icon">📊</span>
+      <span class="sidebar-item-text">Tracker</span>
+    </div>
+    <div class="sidebar-item" data-page="tasks" onclick="gotoSidebarPage('tasks',this)">
+      <span class="sidebar-item-icon">✅</span>
+      <span class="sidebar-item-text">Tasks</span>
+    </div>
+    <div class="sidebar-item" data-page="calendar" onclick="gotoSidebarPage('calendar',this)">
+      <span class="sidebar-item-icon">📅</span>
+      <span class="sidebar-item-text">Calendar</span>
+    </div>
+    <div class="sidebar-item" data-page="productivity" onclick="gotoSidebarPage('productivity',this)">
+      <span class="sidebar-item-icon">⏱️</span>
+      <span class="sidebar-item-text">Productivity</span>
+    </div>
+  </div>
+  <div class="sidebar-footer">
+    <div>APEX v2.0</div>
+    <div style="font-size:8px; margin-top:4px;">Stay locked in</div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content" id="mainContent">
+  <div class="page on" id="page-tracker">
+    <div class="tracker-wrap">
+      <div class="month-header">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+          <div class="month-title" id="tracker-month-title"></div>
+          <div class="month-nav">
+            <button class="mnav-btn" onclick="trackerNav(-1)">&#8249;</button>
+            <button class="mnav-btn" onclick="trackerNav(1)">&#8250;</button>
+          </div>
+        </div>
+        <div class="month-stats">
+          <div class="mstat"><div class="mstat-val" id="stat-habits">0</div><div class="mstat-lbl">HABITS</div></div>
+          <div class="mstat"><div class="mstat-val" id="stat-completed">0</div><div class="mstat-lbl">DONE</div></div>
+          <div class="mstat"><div class="mstat-val" id="stat-progress">0%</div><div class="mstat-lbl">PROGRESS</div></div>
+          <button class="btn-save" onclick="openHabMod()" style="margin-left:4px;padding:4px 12px;font-size:11px;">+ Add</button>
+        </div>
       </div>
-    </div>
-    <div class="month-stats">
-      <div class="mstat"><div class="mstat-val" id="stat-habits">0</div><div class="mstat-lbl">HABITS</div></div>
-      <div class="mstat"><div class="mstat-val" id="stat-completed">0</div><div class="mstat-lbl">DONE</div></div>
-      <div class="mstat"><div class="mstat-val" id="stat-progress">0%</div><div class="mstat-lbl">PROGRESS</div></div>
-      <button class="btn-save" onclick="openHabMod()" style="margin-left:4px;padding:4px 12px;font-size:11px;">+ Add</button>
-    </div>
-  </div>
-  <div class="tracker-main">
-    <div class="habit-sidebar">
-      <div class="hab-header"><span class="hab-header-title">HABITS</span></div>
-      <div id="habit-sidebar-rows"></div>
-    </div>
-    <div class="grid-area"><div class="grid-inner" id="grid-inner"></div></div>
-    <div class="analysis-sidebar">
-      <div class="analysis-head">ANALYSIS</div>
-      <div id="analysis-rows"></div>
-    </div>
-  </div>
-  <div class="charts-section">
-    <div class="chart-card">
-      <div class="chart-header"><div><div class="chart-title">CUMULATIVE COMPLETION</div><div class="chart-sub">Running total this month</div></div><div><div class="chart-val" id="equity-val">0</div><span class="chart-badge badge-up" id="equity-badge">▲ +0</span></div></div>
-      <div class="chart-wrap"><canvas id="equityChart"></canvas></div>
-    </div>
-    <div class="chart-card">
-      <div class="chart-header"><div><div class="chart-title">DAILY COMPLETION RATE</div><div class="chart-sub">Per habit oscillation</div></div><span class="chart-badge badge-up" id="osc-badge">AVG 0%</span></div>
-      <div class="chart-wrap"><canvas id="oscChart"></canvas></div>
-    </div>
-  </div>
-</div>
-</div>
-
-<div class="page" id="page-tasks">
-<div class="task-wrap">
-  <div class="task-top">
-    <div class="task-info-card">
-      <div class="week-date-label">WEEK START</div>
-      <div class="week-date-val" id="task-week-start"></div>
-      <div class="task-overall-lbl">OVERALL COMPLETION</div>
-      <div style="display:flex;justify-content:center;margin-top:8px;">
-        <div class="ring-pos">
-          <svg width="90" height="90" viewBox="0 0 110 110">
-            <circle cx="55" cy="55" r="46" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8"/>
-            <circle id="overall-ring" cx="55" cy="55" r="46" fill="none" stroke="#00ff9d" stroke-width="8" stroke-linecap="round" stroke-dasharray="289" stroke-dashoffset="289" style="transform:rotate(-90deg);transform-origin:55px 55px;transition:stroke-dashoffset .6s;"/>
-          </svg>
-          <div class="day-ring-center"><div class="score-pct" id="overall-pct">0%</div></div>
+      <div class="tracker-main">
+        <div class="habit-sidebar">
+          <div class="hab-header"><span class="hab-header-title">HABITS</span></div>
+          <div id="habit-sidebar-rows"></div>
+        </div>
+        <div class="grid-area"><div class="grid-inner" id="grid-inner"></div></div>
+        <div class="analysis-sidebar">
+          <div class="analysis-head">ANALYSIS</div>
+          <div id="analysis-rows"></div>
+        </div>
+      </div>
+      <div class="charts-section">
+        <div class="chart-card">
+          <div class="chart-header"><div><div class="chart-title">CUMULATIVE COMPLETION</div><div class="chart-sub">Running total this month</div></div><div><div class="chart-val" id="equity-val">0</div><span class="chart-badge badge-up" id="equity-badge">▲ +0</span></div></div>
+          <div class="chart-wrap"><canvas id="equityChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header"><div><div class="chart-title">DAILY COMPLETION RATE</div><div class="chart-sub">Per habit oscillation</div></div><span class="chart-badge badge-up" id="osc-badge">AVG 0%</span></div>
+          <div class="chart-wrap"><canvas id="oscChart"></canvas></div>
         </div>
       </div>
     </div>
-    <div class="overall-chart-card">
-      <div class="oc-header"><div><div class="oc-title">WEEK COMPLETION BY DAY</div><div class="oc-sub">Daily task done rate</div></div><span class="chart-badge badge-up" id="week-chart-badge">0/0 done</span></div>
-      <div class="oc-chart-wrap"><canvas id="weekBarChart"></canvas></div>
-    </div>
   </div>
-  <div class="days-grid" id="days-grid"></div>
-</div>
-</div>
 
-<div class="page" id="page-calendar">
-<div class="cal-wrap">
-  <div class="cal-top">
-    <div class="cal-month-display" id="cal-month-disp"></div>
-    <div class="cal-top-nav">
-      <button class="cal-nav-btn" onclick="calNav(-1)">&#8249;</button>
-      <button class="cal-nav-btn" onclick="calToday()">●</button>
-      <button class="cal-nav-btn" onclick="calNav(1)">&#8250;</button>
+  <div class="page" id="page-tasks">
+    <div class="task-wrap">
+      <div class="task-top">
+        <div class="task-info-card">
+          <div class="week-date-label">WEEK START</div>
+          <div class="week-date-val" id="task-week-start"></div>
+          <div class="task-overall-lbl">OVERALL COMPLETION</div>
+          <div style="display:flex;justify-content:center;margin-top:8px;">
+            <div class="ring-pos">
+              <svg width="90" height="90" viewBox="0 0 110 110">
+                <circle cx="55" cy="55" r="46" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8"/>
+                <circle id="overall-ring" cx="55" cy="55" r="46" fill="none" stroke="#00ff9d" stroke-width="8" stroke-linecap="round" stroke-dasharray="289" stroke-dashoffset="289" style="transform:rotate(-90deg);transform-origin:55px 55px;transition:stroke-dashoffset .6s;"/>
+              </svg>
+              <div class="day-ring-center"><div class="score-pct" id="overall-pct">0%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="overall-chart-card">
+          <div class="oc-header"><div><div class="oc-title">WEEK COMPLETION BY DAY</div><div class="oc-sub">Daily task done rate</div></div><span class="chart-badge badge-up" id="week-chart-badge">0/0 done</span></div>
+          <div class="oc-chart-wrap"><canvas id="weekBarChart"></canvas></div>
+        </div>
+      </div>
+      <div class="days-grid" id="days-grid"></div>
     </div>
-    <div class="cal-view-tabs">
-      <button class="cvtab on" onclick="setCalView('month',this)">Month</button>
-      <button class="cvtab" onclick="setCalView('week',this)">Week</button>
-    </div>
-    <button class="btn-new-ev" onclick="openEvModal()">+ New Event</button>
   </div>
-  <div id="cal-month-view"><div class="cal-month-grid"><div class="cal-day-names"><div class="cal-dn">SUN</div><div class="cal-dn">MON</div><div class="cal-dn">TUE</div><div class="cal-dn">WED</div><div class="cal-dn">THU</div><div class="cal-dn">FRI</div><div class="cal-dn">SAT</div></div><div class="cal-cells" id="cal-cells"></div></div></div>
-  <div id="cal-week-view" style="display:none;"><div class="cal-week-grid"><div class="week-cols" id="week-col-hdrs"></div><div class="week-time-grid" id="week-time-grid"></div></div></div>
-</div>
-</div>
 
-<div class="page" id="page-productivity">
-<div class="prod-wrap">
-  <div class="prod-left">
-    <div class="pcard">
-      <div class="pcard-title">Pomodoro</div>
-      <div class="pcard-sub">Focus timer — stays running in background</div>
-      <div class="pomo-modes">
-        <button class="pomo-mode on" onclick="setPomoMode('focus',25,this)">Focus</button>
-        <button class="pomo-mode" onclick="setPomoMode('short',5,this)">Short</button>
-        <button class="pomo-mode" onclick="setPomoMode('long',15,this)">Long</button>
-        <button class="pomo-mode" onclick="setPomoMode('custom',null,this)">Custom</button>
-        <button class="pomo-mode" onclick="setStopwatchMode()">Stopwatch</button>
+  <div class="page" id="page-calendar">
+    <div class="cal-wrap">
+      <div class="cal-top">
+        <div class="cal-month-display" id="cal-month-disp"></div>
+        <div class="cal-top-nav">
+          <button class="cal-nav-btn" onclick="calNav(-1)">&#8249;</button>
+          <button class="cal-nav-btn" onclick="calToday()">●</button>
+          <button class="cal-nav-btn" onclick="calNav(1)">&#8250;</button>
+        </div>
+        <div class="cal-view-tabs">
+          <button class="cvtab on" onclick="setCalView('month',this)">Month</button>
+          <button class="cvtab" onclick="setCalView('week',this)">Week</button>
+        </div>
+        <button class="btn-new-ev" onclick="openEvModal()">+ New Event</button>
       </div>
-      <div id="custom-time-input" class="custom-time-input">
-        <input type="number" id="custom-minutes" min="1" max="180" value="25">
-        <button onclick="applyCustomTime()">Set</button>
-      </div>
-      <div class="pomo-ring-wrap">
-        <svg width="180" height="180" viewBox="0 0 200 200">
-          <circle cx="100" cy="100" r="88" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="8"/>
-          <circle id="pomo-ring" cx="100" cy="100" r="88" fill="none" stroke="#00ff9d" stroke-width="8" stroke-linecap="round" stroke-dasharray="552.9" stroke-dashoffset="0" style="transform:rotate(-90deg);transform-origin:100px 100px;transition:stroke-dashoffset 0.3s linear;"/>
-        </svg>
-        <div class="pomo-center"><div class="pomo-time" id="pomo-time">25:00</div><div class="pomo-phase-lbl" id="pomo-phase">FOCUS</div></div>
-      </div>
-      <div class="pomo-controls">
-        <button class="pbtn" onclick="resetPomo()">&#8635;</button>
-        <button class="pbtn main" id="pomo-play-btn" onclick="togglePomo()">&#9654;</button>
-        <button class="pbtn" onclick="skipPomo()">&#9197;</button>
-      </div>
-      <div class="pomo-dots" id="pomo-dots"><div class="pdot"></div><div class="pdot"></div><div class="pdot"></div><div class="pdot"></div></div>
-      <div class="pomo-task-lbl">Currently working on</div>
-      <select id="pomo-task-selector" class="pomo-task-select" onclick="event.stopPropagation();">
-        <option value="">— select a task —</option>
-      </select>
-      <div class="pomo-task-name" id="pomo-task-name">— select a task —</div>
+      <div id="cal-month-view"><div class="cal-month-grid"><div class="cal-day-names"><div class="cal-dn">SUN</div><div class="cal-dn">MON</div><div class="cal-dn">TUE</div><div class="cal-dn">WED</div><div class="cal-dn">THU</div><div class="cal-dn">FRI</div><div class="cal-dn">SAT</div></div><div class="cal-cells" id="cal-cells"></div></div></div>
+      <div id="cal-week-view" style="display:none;"><div class="cal-week-grid"><div class="week-cols" id="week-col-hdrs"></div><div class="week-time-grid" id="week-time-grid"></div></div></div>
     </div>
   </div>
-  <div class="pcard quote-card">
-    <div class="pcard-title">Mindset Fuel</div>
-    <div class="pcard-sub">Trading · Success · Mental Hardness</div>
-    <div class="quote-mark-big">"</div>
-    <div class="quote-body" id="q-body"></div>
-    <div class="quote-auth" id="q-auth"></div>
-    <div class="quote-nav-row"><div id="q-dots" style="display:flex;gap:5px;flex:1;flex-wrap:wrap;"></div><button class="qnav-btn" onclick="prevQ()">←</button><button class="qnav-btn" onclick="nextQ()">→</button></div>
+
+  <div class="page" id="page-productivity">
+    <div class="prod-wrap">
+      <div class="prod-left">
+        <div class="pcard">
+          <div class="pcard-title">Pomodoro</div>
+          <div class="pcard-sub">Focus timer — stays running in background</div>
+          <div class="pomo-modes">
+            <button class="pomo-mode on" onclick="setPomoMode('focus',25,this)">Focus</button>
+            <button class="pomo-mode" onclick="setPomoMode('short',5,this)">Short</button>
+            <button class="pomo-mode" onclick="setPomoMode('long',15,this)">Long</button>
+            <button class="pomo-mode" onclick="setPomoMode('custom',null,this)">Custom</button>
+            <button class="pomo-mode" onclick="setStopwatchMode()">Stopwatch</button>
+          </div>
+          <div id="custom-time-input" class="custom-time-input">
+            <input type="number" id="custom-minutes" min="1" max="180" value="25">
+            <button onclick="applyCustomTime()">Set</button>
+          </div>
+          <div class="pomo-ring-wrap">
+            <svg width="180" height="180" viewBox="0 0 200 200">
+              <circle cx="100" cy="100" r="88" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="8"/>
+              <circle id="pomo-ring" cx="100" cy="100" r="88" fill="none" stroke="#00ff9d" stroke-width="8" stroke-linecap="round" stroke-dasharray="552.9" stroke-dashoffset="0" style="transform:rotate(-90deg);transform-origin:100px 100px;transition:stroke-dashoffset 0.3s linear;"/>
+            </svg>
+            <div class="pomo-center"><div class="pomo-time" id="pomo-time">25:00</div><div class="pomo-phase-lbl" id="pomo-phase">FOCUS</div></div>
+          </div>
+          <div class="pomo-controls">
+            <button class="pbtn" onclick="resetPomo()">&#8635;</button>
+            <button class="pbtn main" id="pomo-play-btn" onclick="togglePomo()">&#9654;</button>
+            <button class="pbtn" onclick="skipPomo()">&#9197;</button>
+          </div>
+          <div class="pomo-dots" id="pomo-dots"><div class="pdot"></div><div class="pdot"></div><div class="pdot"></div><div class="pdot"></div></div>
+          <div class="pomo-task-lbl">Currently working on</div>
+          <select id="pomo-task-selector" class="pomo-task-select" onclick="event.stopPropagation();">
+            <option value="">— select a task —</option>
+          </select>
+          <div class="pomo-task-name" id="pomo-task-name">— select a task —</div>
+        </div>
+      </div>
+      <div class="pcard quote-card">
+        <div class="pcard-title">Mindset Fuel</div>
+        <div class="pcard-sub">Trading · Success · Mental Hardness</div>
+        <div class="quote-mark-big">"</div>
+        <div class="quote-body" id="q-body"></div>
+        <div class="quote-auth" id="q-auth"></div>
+        <div class="quote-nav-row"><div id="q-dots" style="display:flex;gap:5px;flex:1;flex-wrap:wrap;"></div><button class="qnav-btn" onclick="prevQ()">←</button><button class="qnav-btn" onclick="nextQ()">→</button></div>
+      </div>
+    </div>
   </div>
-</div>
 </div>
 
 <div class="modal-bg" id="hab-modal"><div class="modal"><div class="modal-title">New Habit</div><div class="fg"><label class="fl">NAME</label><input class="fi" id="hab-name" placeholder="e.g. Morning Run"/></div><div class="frow"><div class="fg"><label class="fl">CATEGORY</label><select class="fi" id="hab-cat"><option>Health</option><option>Fitness</option><option>Learning</option><option>Mindfulness</option><option>Productivity</option></select></div><div class="fg"><label class="fl">FREQUENCY</label><select class="fi" id="hab-freq"><option>Daily</option><option>Weekdays</option><option>Weekends</option></select></div></div><div class="fg"><label class="fl">COLOR</label><div class="color-row"><div class="cpick sel" style="background:#00ff9d" data-c="#00ff9d" onclick="selHabColor(this)"></div><div class="cpick" style="background:#7c6fff" data-c="#7c6fff" onclick="selHabColor(this)"></div><div class="cpick" style="background:#ff6b35" data-c="#ff6b35" onclick="selHabColor(this)"></div><div class="cpick" style="background:#f472b6" data-c="#f472b6" onclick="selHabColor(this)"></div><div class="cpick" style="background:#2979ff" data-c="#2979ff" onclick="selHabColor(this)"></div><div class="cpick" style="background:#d500f9" data-c="#d500f9" onclick="selHabColor(this)"></div><div class="cpick" style="background:#ffea00" data-c="#ffea00" onclick="selHabColor(this)"></div><div class="cpick" style="background:#00e5ff" data-c="#00e5ff" onclick="selHabColor(this)"></div></div></div><div class="mactions"><button class="btn-cancel" onclick="closeMod('hab-modal')">Cancel</button><button class="btn-save" onclick="addHabit()">Add</button></div></div></div>
@@ -535,18 +685,64 @@ function getDaysInMonth(y,m){ return new Date(y,m+1,0).getDate(); }
 function getWeekIdx(d, firstOfMonth){ return Math.floor((d + firstOfMonth.getDay() - 1) / 7); }
 function escapeHtml(str){ if(!str) return ''; return str.replace(/[&<>]/g, function(m){ if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m;}); }
 
-function scrollToCurrentDay() {
-  const todayCols = document.querySelectorAll('.day-cell.today-col');
-  if (todayCols.length > 0) {
-    const firstTodayCol = todayCols[0];
-    const container = document.querySelector('.grid-area');
-    if (container && firstTodayCol) {
-      const containerRect = container.getBoundingClientRect();
-      const elementRect = firstTodayCol.getBoundingClientRect();
-      const scrollPosition = elementRect.left + container.scrollLeft - containerRect.left - (containerRect.width / 2) + (elementRect.width / 2);
-      container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
-    }
+// Sidebar functions
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const mainContent = document.getElementById('mainContent');
+  sidebar.classList.toggle('collapsed');
+  mainContent.classList.toggle('expanded');
+  localStorage.setItem('sidebar_collapsed', sidebar.classList.contains('collapsed'));
+}
+
+function gotoSidebarPage(pageId, element) {
+  // Update active state
+  document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+  element.classList.add('active');
+  
+  // Navigate to page
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  document.getElementById('page-' + pageId).classList.add('on');
+  
+  // Render page content
+  if(pageId === 'tracker') renderTracker();
+  if(pageId === 'tasks') renderTasks();
+  if(pageId === 'calendar') renderCalendar();
+  if(pageId === 'productivity') renderQuotes();
+  
+  // Close sidebar on mobile after selection
+  if (window.innerWidth <= 767) {
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('mainContent');
+    sidebar.classList.add('collapsed');
+    mainContent.classList.add('expanded');
   }
+}
+
+// Load sidebar state
+function loadSidebarState() {
+  const isCollapsed = localStorage.getItem('sidebar_collapsed') === 'true';
+  const sidebar = document.getElementById('sidebar');
+  const mainContent = document.getElementById('mainContent');
+  if (isCollapsed) {
+    sidebar.classList.add('collapsed');
+    mainContent.classList.add('expanded');
+  }
+}
+
+function scrollToCurrentDay() {
+  setTimeout(() => {
+    const todayCols = document.querySelectorAll('.day-cell.today-col');
+    if (todayCols.length > 0) {
+      const firstTodayCol = todayCols[0];
+      const container = document.querySelector('.grid-area');
+      if (container && firstTodayCol) {
+        const containerRect = container.getBoundingClientRect();
+        const elementRect = firstTodayCol.getBoundingClientRect();
+        const scrollPosition = elementRect.left + container.scrollLeft - containerRect.left - (containerRect.width / 2) + (elementRect.width / 2);
+        container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
+      }
+    }
+  }, 150);
 }
 
 function updateTaskSelector() {
@@ -583,19 +779,6 @@ function updateTaskSelector() {
     document.getElementById('pomo-task-name').textContent = '— select a task —';
   }
 }
-
-function gotoPage(id, btn){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
-  document.querySelectorAll('.ntab').forEach(b=>b.classList.remove('on'));
-  document.getElementById('page-'+id).classList.add('on');
-  btn.classList.add('on');
-  if(id==='tracker') renderTracker();
-  if(id==='tasks') renderTasks();
-  if(id==='calendar') renderCalendar();
-  if(id==='productivity') renderQuotes();
-}
-
-document.getElementById('nav-date').textContent = today.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}).toUpperCase();
 
 function closeMod(id){ document.getElementById(id).classList.remove('on'); }
 function openHabMod(){ document.getElementById('hab-modal').classList.add('on'); }
@@ -681,7 +864,7 @@ function renderTracker(){
   document.getElementById('analysis-rows').innerHTML = analysisHTML;
   document.getElementById('grid-inner').innerHTML = `<div class="week-headers">${weekHeaderHTML}</div>` + dayHeaderHTML + habitGridHTML;
   renderCharts(y,m,dim,todayKey);
-  setTimeout(scrollToCurrentDay, 100);
+  scrollToCurrentDay();
 }
 
 let equityChartInst=null, oscChartInst=null;
@@ -929,8 +1112,9 @@ function nextQ(){ currentQuoteIdx = (currentQuoteIdx + 1) % quotes.length; rende
 function prevQ(){ currentQuoteIdx = (currentQuoteIdx - 1 + quotes.length) % quotes.length; renderQuotes(); saveAllData(); }
 function setQuote(idx){ currentQuoteIdx = idx; renderQuotes(); saveAllData(); }
 
-// Initialize task selector event listener
+// Initialize
 document.addEventListener('DOMContentLoaded', function() {
+  loadSidebarState();
   const selector = document.getElementById('pomo-task-selector');
   if(selector) {
     selector.addEventListener('change', function(e) {
