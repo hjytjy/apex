@@ -114,7 +114,7 @@ nav { display: none; }
 .mnav-btn { background: var(--s2); border: 1px solid var(--b2); border-radius: 8px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text2); font-size: 18px; transition: all 0.2s; }
 .mnav-btn:hover { background: var(--accent); color: #000; border-color: var(--accent); }
 
-/* HABIT TABLE - IMPROVED DESIGN */
+/* HABIT TABLE - COMPACT DESIGN */
 .habit-table-container {
   background: var(--s1);
   border-radius: 16px;
@@ -124,23 +124,24 @@ nav { display: none; }
 }
 .habit-table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  font-size: 13px;
+  border-collapse: collapse;
+  font-size: 12px;
+  table-layout: auto;
 }
 .habit-table th, .habit-table td {
-  padding: 14px 12px;
+  padding: 10px 6px;
   text-align: center;
   border-bottom: 1px solid var(--b1);
   border-right: 1px solid var(--b1);
 }
 .habit-table th:last-child, .habit-table td:last-child { border-right: none; }
-.habit-table tr:last-child td { border-bottom: none; }
 
-/* Habit name column */
+/* Habit name column - FIXED WIDTH */
 .habit-name-cell {
   text-align: left !important;
-  min-width: 200px;
+  width: 180px;
+  min-width: 180px;
+  max-width: 180px;
   position: sticky;
   left: 0;
   background: var(--s1);
@@ -150,75 +151,50 @@ nav { display: none; }
 .habit-name-content {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
+  flex-wrap: nowrap;
 }
-.habit-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-.habit-name-text { font-size: 13px; color: var(--text); font-weight: 500; flex: 1; }
+.habit-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.habit-name-text { font-size: 12px; color: var(--text); font-weight: 500; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .habit-pct-badge { 
   background: rgba(0,255,157,0.1); 
-  padding: 4px 8px; 
-  border-radius: 20px; 
-  font-size: 10px; 
+  padding: 2px 6px; 
+  border-radius: 12px; 
+  font-size: 9px; 
   color: var(--accent); 
   font-family: 'JetBrains Mono', monospace;
-  margin-left: 8px;
+  white-space: nowrap;
 }
-.habit-actions-cell { display: flex; gap: 6px; margin-left: 8px; }
+.habit-actions-cell { display: flex; gap: 4px; margin-left: 4px; flex-shrink: 0; }
 .habit-edit, .habit-delete {
   background: var(--s3);
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   color: var(--text2);
   cursor: pointer;
-  font-size: 11px;
-  padding: 4px 8px;
+  font-size: 9px;
+  padding: 2px 5px;
   transition: all 0.2s;
 }
 .habit-edit:hover { background: var(--accent); color: #000; }
 .habit-delete:hover { background: #ff4444; color: #fff; }
 
-/* Week headers */
-.week-header {
-  background: var(--s2);
-  font-size: 11px;
+/* Day/Check cells - EQUAL WIDTH */
+.habit-table th {
+  padding: 8px 4px;
   font-weight: 600;
-  font-family: 'JetBrains Mono', monospace;
-  letter-spacing: 0.5px;
-  padding: 12px 8px !important;
 }
-.week-header-week1 { background: rgba(0,200,83,0.12); color: var(--w1); }
-.week-header-week2 { background: rgba(41,121,255,0.12); color: var(--w2); }
-.week-header-week3 { background: rgba(213,0,249,0.12); color: var(--w3); }
-.week-header-week4 { background: rgba(255,109,0,0.12); color: var(--w4); }
-
-/* Day headers */
-.day-header {
-  background: var(--s1);
-  font-size: 11px;
-  font-weight: 500;
-  padding: 10px 8px !important;
-}
-.day-header .day-name { font-size: 10px; color: var(--text3); text-transform: uppercase; margin-bottom: 4px; }
-.day-header .day-num { font-size: 16px; font-weight: 600; color: var(--text2); }
-.day-header.today .day-num {
-  color: var(--accent);
-  background: rgba(0,255,157,0.15);
-  display: inline-block;
-  padding: 2px 10px;
-  border-radius: 20px;
-}
-
-/* Check cells */
 .check-cell {
   cursor: pointer;
   transition: all 0.15s;
   background: var(--s1);
+  width: 50px;
 }
 .check-cell:hover { background: rgba(255,255,255,0.03); }
 .check-box {
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
   border: 2px solid var(--b2);
   display: inline-flex;
   align-items: center;
@@ -229,13 +205,45 @@ nav { display: none; }
 .check-box.done {
   border-color: transparent;
   background: rgba(0,255,157,0.15);
-  transform: scale(1.05);
+  transform: scale(1.02);
 }
 .today-cell .check-box {
-  box-shadow: 0 0 0 2px rgba(0,255,157,0.4);
+  box-shadow: 0 0 0 2px rgba(0,255,157,0.3);
   border-color: var(--accent);
 }
 .check-cell:active .check-box { transform: scale(0.95); }
+
+/* Week headers - COMPACT */
+.week-header {
+  background: var(--s2);
+  font-size: 10px;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.5px;
+  padding: 8px 4px !important;
+}
+.week-header-week1 { background: rgba(0,200,83,0.12); color: var(--w1); }
+.week-header-week2 { background: rgba(41,121,255,0.12); color: var(--w2); }
+.week-header-week3 { background: rgba(213,0,249,0.12); color: var(--w3); }
+.week-header-week4 { background: rgba(255,109,0,0.12); color: var(--w4); }
+
+/* Day headers - COMPACT */
+.day-header {
+  background: var(--s1);
+  font-size: 10px;
+  font-weight: 500;
+  padding: 6px 4px !important;
+  width: 50px;
+}
+.day-header .day-name { font-size: 9px; color: var(--text3); text-transform: uppercase; margin-bottom: 2px; }
+.day-header .day-num { font-size: 13px; font-weight: 600; color: var(--text2); }
+.day-header.today .day-num {
+  color: var(--accent);
+  background: rgba(0,255,157,0.15);
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 20px;
+}
 
 /* Analysis Section */
 .analysis-sidebar { 
@@ -415,10 +423,19 @@ nav { display: none; }
   .sidebar-toggle { left: 12px; top: 12px; z-index: 1002; }
   .tracker-wrap, .task-wrap, .cal-wrap, .prod-wrap { padding: 12px; }
   .month-title { font-size: 24px; }
-  .mstat { padding: 6px 12px; min-width: 65px; }
-  .mstat-val { font-size: 16px; }
-  .habit-name-cell { min-width: 160px; }
-  .check-box { width: 28px; height: 28px; }
+  .mstat { padding: 4px 10px; min-width: 60px; }
+  .mstat-val { font-size: 14px; }
+  
+  /* Mobile habit table fixes */
+  .habit-name-cell { width: 140px; min-width: 140px; max-width: 140px; }
+  .habit-name-text { font-size: 11px; }
+  .habit-pct-badge { font-size: 8px; padding: 1px 4px; }
+  .check-box { width: 24px; height: 24px; }
+  .day-header { width: 44px; }
+  .day-header .day-num { font-size: 11px; }
+  .check-cell { width: 44px; }
+  .habit-table th, .habit-table td { padding: 6px 3px; }
+  
   .task-top { grid-template-columns: 1fr; }
   .month-header { flex-direction: column; align-items: flex-start; }
   .month-stats { width: 100%; justify-content: space-between; }
