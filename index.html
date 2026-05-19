@@ -29,6 +29,16 @@
 html{scrollbar-width:thin;scrollbar-color:var(--s4) var(--bg);}
 body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh;overflow-x:hidden;}
 
+/* Prevent zoom on iOS */
+input, select, textarea, button {
+  font-size: 16px;
+}
+@media (max-width: 768px) {
+  input, select, textarea, button {
+    font-size: 16px;
+  }
+}
+
 nav{display:flex;align-items:center;padding:0 16px;height:52px;border-bottom:1px solid var(--b1);background:rgba(8,8,16,0.97);backdrop-filter:blur(20px);position:sticky;top:0;z-index:200;}
 .logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--accent);margin-right:20px;}
 .nav-tabs{display:flex;gap:2px;overflow-x:auto;flex:1;}
@@ -103,7 +113,7 @@ nav{display:flex;align-items:center;padding:0 16px;height:52px;border-bottom:1px
 .modal-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;margin-bottom:16px;}
 .fg{margin-bottom:12px;}
 .fl{font-size:9px;color:var(--text3);margin-bottom:4px;display:block;font-family:'JetBrains Mono',monospace;}
-.fi{width:100%;background:var(--s3);border:1px solid var(--b2);border-radius:6px;padding:8px 10px;color:var(--text);font-size:12px;font-family:'Syne',sans-serif;outline:none;}
+.fi{width:100%;background:var(--s3);border:1px solid var(--b2);border-radius:6px;padding:8px 10px;color:var(--text);font-size:16px;font-family:'Syne',sans-serif;outline:none;}
 .fi:focus{border-color:var(--accent);}
 .color-row{display:flex;gap:6px;flex-wrap:wrap;}
 .cpick{width:24px;height:24px;border-radius:50%;cursor:pointer;border:2px solid transparent;}
@@ -188,10 +198,30 @@ nav{display:flex;align-items:center;padding:0 16px;height:52px;border-bottom:1px
 .pdot{width:8px;height:8px;border-radius:50%;background:var(--b2);}
 .pdot.done{background:var(--accent);}
 .pomo-task-lbl{font-size:9px;color:var(--text3);font-family:'JetBrains Mono',monospace;text-align:center;margin-bottom:4px;}
-.pomo-task-name{font-size:11px;color:var(--text2);text-align:center;}
+
+.pomo-task-select {
+  width: 100%;
+  background: var(--s3);
+  border: 1px solid var(--b2);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--text);
+  font-size: 16px;
+  font-family: 'Syne', sans-serif;
+  margin-top: 8px;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+@media (max-width: 768px) {
+  .pomo-task-select {
+    font-size: 16px;
+  }
+}
+.pomo-task-name{font-size:12px;color:var(--text2);text-align:center;margin-top:8px;font-style:italic;}
 
 .custom-time-input{display:none;margin-bottom:15px;text-align:center;padding:10px;background:var(--s2);border-radius:8px;}
-.custom-time-input input{width:80px;background:var(--s3);border:1px solid var(--b2);border-radius:6px;padding:8px;color:var(--text);text-align:center;font-size:14px;}
+.custom-time-input input{width:80px;background:var(--s3);border:1px solid var(--b2);border-radius:6px;padding:8px;color:var(--text);text-align:center;font-size:16px;}
 .custom-time-input button{background:var(--accent);color:#000;border:none;border-radius:6px;padding:6px 12px;cursor:pointer;font-weight:700;margin-left:8px;font-size:11px;}
 
 .quote-card{flex:1;}
@@ -365,6 +395,9 @@ nav{display:flex;align-items:center;padding:0 16px;height:52px;border-bottom:1px
       </div>
       <div class="pomo-dots" id="pomo-dots"><div class="pdot"></div><div class="pdot"></div><div class="pdot"></div><div class="pdot"></div></div>
       <div class="pomo-task-lbl">Currently working on</div>
+      <select id="pomo-task-selector" class="pomo-task-select" onclick="event.stopPropagation();">
+        <option value="">— select a task —</option>
+      </select>
       <div class="pomo-task-name" id="pomo-task-name">— select a task —</div>
     </div>
   </div>
@@ -502,6 +535,55 @@ function getDaysInMonth(y,m){ return new Date(y,m+1,0).getDate(); }
 function getWeekIdx(d, firstOfMonth){ return Math.floor((d + firstOfMonth.getDay() - 1) / 7); }
 function escapeHtml(str){ if(!str) return ''; return str.replace(/[&<>]/g, function(m){ if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m;}); }
 
+function scrollToCurrentDay() {
+  const todayCols = document.querySelectorAll('.day-cell.today-col');
+  if (todayCols.length > 0) {
+    const firstTodayCol = todayCols[0];
+    const container = document.querySelector('.grid-area');
+    if (container && firstTodayCol) {
+      const containerRect = container.getBoundingClientRect();
+      const elementRect = firstTodayCol.getBoundingClientRect();
+      const scrollPosition = elementRect.left + container.scrollLeft - containerRect.left - (containerRect.width / 2) + (elementRect.width / 2);
+      container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
+    }
+  }
+}
+
+function updateTaskSelector() {
+  const selector = document.getElementById('pomo-task-selector');
+  if (!selector) return;
+  
+  const ws = getWeekStart();
+  let allTasksList = [];
+  
+  for(let i=0; i<7; i++){
+    const dateKey = fmtDateISO(addDays(ws,i));
+    const tasks = allTasks[dateKey] || [];
+    tasks.forEach(task => {
+      if(!task.done) {
+        allTasksList.push({
+          id: task.id,
+          text: task.text,
+          date: dateKey
+        });
+      }
+    });
+  }
+  
+  const currentVal = selector.value;
+  selector.innerHTML = '<option value="">— select a task —</option>';
+  allTasksList.forEach(task => {
+    selector.innerHTML += `<option value="${task.id}|${task.date}">${escapeHtml(task.text)}</option>`;
+  });
+  
+  if (currentVal && allTasksList.some(t => `${t.id}|${t.date}` === currentVal)) {
+    selector.value = currentVal;
+  } else {
+    selector.value = "";
+    document.getElementById('pomo-task-name').textContent = '— select a task —';
+  }
+}
+
 function gotoPage(id, btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.ntab').forEach(b=>b.classList.remove('on'));
@@ -599,6 +681,7 @@ function renderTracker(){
   document.getElementById('analysis-rows').innerHTML = analysisHTML;
   document.getElementById('grid-inner').innerHTML = `<div class="week-headers">${weekHeaderHTML}</div>` + dayHeaderHTML + habitGridHTML;
   renderCharts(y,m,dim,todayKey);
+  setTimeout(scrollToCurrentDay, 100);
 }
 
 let equityChartInst=null, oscChartInst=null;
@@ -645,6 +728,7 @@ function renderTasks(){
   }
   grid.innerHTML=html;
   updateOverallStats();
+  updateTaskSelector();
 }
 
 function updateOverallStats(){
@@ -665,10 +749,10 @@ function updateOverallStats(){
 }
 
 function openTaskMod(dateKey){ document.getElementById('task-day-idx').value=dateKey; document.getElementById('task-input').value=''; document.getElementById('task-modal').classList.add('on'); }
-function addTask(){ const text=document.getElementById('task-input').value.trim(); const dateKey=document.getElementById('task-day-idx').value; if(!text) return; if(!allTasks[dateKey]) allTasks[dateKey]=[]; allTasks[dateKey].push({id:Date.now(),text,done:false}); closeMod('task-modal'); renderTasks(); saveAllData(); }
-function toggleDayTask(dateKey,id){ const t=allTasks[dateKey]&&allTasks[dateKey].find(x=>x.id===id); if(t){ t.done=!t.done; renderTasks(); saveAllData(); } }
-function editTask(dateKey, taskId){ const tasks = allTasks[dateKey] || []; const task = tasks.find(t => t.id === taskId); if(task){ const newText = prompt('Edit task:', task.text); if(newText && newText.trim()){ task.text = newText.trim(); renderTasks(); saveAllData(); } } }
-function deleteTask(dateKey, taskId){ if(confirm('Delete this task?')){ allTasks[dateKey] = (allTasks[dateKey] || []).filter(t => t.id !== taskId); if(allTasks[dateKey].length === 0) delete allTasks[dateKey]; renderTasks(); saveAllData(); } }
+function addTask(){ const text=document.getElementById('task-input').value.trim(); const dateKey=document.getElementById('task-day-idx').value; if(!text) return; if(!allTasks[dateKey]) allTasks[dateKey]=[]; allTasks[dateKey].push({id:Date.now(),text,done:false}); closeMod('task-modal'); renderTasks(); saveAllData(); updateTaskSelector(); }
+function toggleDayTask(dateKey,id){ const t=allTasks[dateKey]&&allTasks[dateKey].find(x=>x.id===id); if(t){ t.done=!t.done; renderTasks(); saveAllData(); updateTaskSelector(); } }
+function editTask(dateKey, taskId){ const tasks = allTasks[dateKey] || []; const task = tasks.find(t => t.id === taskId); if(task){ const newText = prompt('Edit task:', task.text); if(newText && newText.trim()){ task.text = newText.trim(); renderTasks(); saveAllData(); updateTaskSelector(); } } }
+function deleteTask(dateKey, taskId){ if(confirm('Delete this task?')){ allTasks[dateKey] = (allTasks[dateKey] || []).filter(t => t.id !== taskId); if(allTasks[dateKey].length === 0) delete allTasks[dateKey]; renderTasks(); saveAllData(); updateTaskSelector(); } }
 
 function getEventsForDate(date){ const result=[]; events.forEach(ev=>{ if(eventMatchesDate(ev,date)) result.push(ev); }); return result; }
 function eventMatchesDate(ev,date){ if(ev.repeat==='none') return ev.date===fmtDate(date); const parts=ev.date.split('-'); const evBase=new Date(parseInt(parts[0]),parseInt(parts[1])-1,parseInt(parts[2])); if(date<evBase) return false; if(ev.repeat==='daily') return true; if(ev.repeat==='weekdays') return date.getDay()>=1&&date.getDay()<=5; if(ev.repeat==='weekly') return date.getDay()===evBase.getDay(); if(ev.repeat==='monthly') return date.getDate()===evBase.getDate(); return false; }
@@ -845,11 +929,36 @@ function nextQ(){ currentQuoteIdx = (currentQuoteIdx + 1) % quotes.length; rende
 function prevQ(){ currentQuoteIdx = (currentQuoteIdx - 1 + quotes.length) % quotes.length; renderQuotes(); saveAllData(); }
 function setQuote(idx){ currentQuoteIdx = idx; renderQuotes(); saveAllData(); }
 
+// Initialize task selector event listener
+document.addEventListener('DOMContentLoaded', function() {
+  const selector = document.getElementById('pomo-task-selector');
+  if(selector) {
+    selector.addEventListener('change', function(e) {
+      e.stopPropagation();
+      const val = this.value;
+      if(val) {
+        const [taskId, dateKey] = val.split('|');
+        const tasks = allTasks[dateKey] || [];
+        const task = tasks.find(t => t.id == taskId);
+        if(task) {
+          document.getElementById('pomo-task-name').textContent = task.text;
+        }
+      } else {
+        document.getElementById('pomo-task-name').textContent = '— select a task —';
+      }
+    });
+    selector.addEventListener('touchstart', function(e) {
+      e.stopPropagation();
+    });
+  }
+});
+
 loadAllData();
 renderTracker();
 renderTasks();
 renderCalendar();
 renderQuotes();
+updateTaskSelector();
 </script>
 </body>
 </html>
