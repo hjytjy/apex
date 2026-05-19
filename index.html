@@ -96,253 +96,314 @@ nav { display: none; }
 .page.on { display: block; }
 
 /* Tracker Page */
-.tracker-wrap { padding: 16px 20px; max-width: 1600px; margin: 0 auto; }
+.tracker-wrap { padding: 20px 24px; max-width: 1600px; margin: 0 auto; }
 .month-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   flex-wrap: wrap;
   gap: 15px;
-  margin-top: 10px;
 }
-.month-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--text); }
-.month-stats { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
-.mstat { text-align: center; }
-.mstat-val { font-family: 'JetBrains Mono', monospace; font-size: 16px; font-weight: 500; color: var(--accent); }
-.mstat-lbl { font-size: 8px; color: var(--text3); letter-spacing: .5px; }
-.month-nav { display: flex; gap: 6px; }
-.mnav-btn { background: var(--s3); border: 1px solid var(--b2); border-radius: 6px; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text2); font-size: 14px; }
+.month-title { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 2px; color: var(--text); }
+.month-stats { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+.mstat { text-align: center; background: var(--s2); padding: 8px 16px; border-radius: 12px; min-width: 80px; }
+.mstat-val { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 600; color: var(--accent); }
+.mstat-lbl { font-size: 9px; color: var(--text3); letter-spacing: .5px; margin-top: 4px; }
+.month-nav { display: flex; gap: 8px; }
+.mnav-btn { background: var(--s2); border: 1px solid var(--b2); border-radius: 8px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text2); font-size: 18px; transition: all 0.2s; }
+.mnav-btn:hover { background: var(--accent); color: #000; border-color: var(--accent); }
 
-/* HABIT TABLE - FIXED LAYOUT */
+/* HABIT TABLE - IMPROVED DESIGN */
 .habit-table-container {
   background: var(--s1);
-  border: 1px solid var(--b1);
-  border-radius: var(--r2);
+  border-radius: 16px;
   overflow-x: auto;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
+  border: 1px solid var(--b1);
 }
 .habit-table {
-  min-width: 100%;
-  border-collapse: collapse;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 13px;
 }
 .habit-table th, .habit-table td {
-  border: 1px solid var(--b1);
-  padding: 10px 8px;
+  padding: 14px 12px;
   text-align: center;
-  vertical-align: middle;
+  border-bottom: 1px solid var(--b1);
+  border-right: 1px solid var(--b1);
 }
-.habit-table th {
-  background: var(--s2);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--text3);
-  padding: 8px 4px;
-}
-.week-separator {
-  border-left: 2px solid var(--accent);
-  border-right: none;
-}
-.week-separator-left {
-  border-left: 2px solid rgba(0,255,157,0.3);
-}
+.habit-table th:last-child, .habit-table td:last-child { border-right: none; }
+.habit-table tr:last-child td { border-bottom: none; }
+
+/* Habit name column */
 .habit-name-cell {
   text-align: left !important;
-  min-width: 150px;
+  min-width: 200px;
   position: sticky;
   left: 0;
   background: var(--s1);
   z-index: 10;
+  font-weight: 500;
 }
 .habit-name-content {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
 }
 .habit-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-.habit-name-text { font-size: 12px; color: var(--text2); font-weight: 500; flex: 1; }
-.habit-pct-badge { font-size: 9px; color: var(--accent); font-family: 'JetBrains Mono', monospace; }
-.habit-actions-cell { display: flex; gap: 4px; margin-left: 8px; }
+.habit-name-text { font-size: 13px; color: var(--text); font-weight: 500; flex: 1; }
+.habit-pct-badge { 
+  background: rgba(0,255,157,0.1); 
+  padding: 4px 8px; 
+  border-radius: 20px; 
+  font-size: 10px; 
+  color: var(--accent); 
+  font-family: 'JetBrains Mono', monospace;
+  margin-left: 8px;
+}
+.habit-actions-cell { display: flex; gap: 6px; margin-left: 8px; }
 .habit-edit, .habit-delete {
   background: var(--s3);
-  border: 1px solid var(--b2);
-  border-radius: 4px;
+  border: none;
+  border-radius: 6px;
   color: var(--text2);
   cursor: pointer;
-  font-size: 9px;
-  padding: 2px 5px;
+  font-size: 11px;
+  padding: 4px 8px;
+  transition: all 0.2s;
 }
 .habit-edit:hover { background: var(--accent); color: #000; }
 .habit-delete:hover { background: #ff4444; color: #fff; }
 
-.check-cell { cursor: pointer; transition: all 0.15s; }
-.check-cell:hover { background: rgba(255,255,255,0.04); }
+/* Week headers */
+.week-header {
+  background: var(--s2);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.5px;
+  padding: 12px 8px !important;
+}
+.week-header-week1 { background: rgba(0,200,83,0.12); color: var(--w1); }
+.week-header-week2 { background: rgba(41,121,255,0.12); color: var(--w2); }
+.week-header-week3 { background: rgba(213,0,249,0.12); color: var(--w3); }
+.week-header-week4 { background: rgba(255,109,0,0.12); color: var(--w4); }
+
+/* Day headers */
+.day-header {
+  background: var(--s1);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 10px 8px !important;
+}
+.day-header .day-name { font-size: 10px; color: var(--text3); text-transform: uppercase; margin-bottom: 4px; }
+.day-header .day-num { font-size: 16px; font-weight: 600; color: var(--text2); }
+.day-header.today .day-num {
+  color: var(--accent);
+  background: rgba(0,255,157,0.15);
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 20px;
+}
+
+/* Check cells */
+.check-cell {
+  cursor: pointer;
+  transition: all 0.15s;
+  background: var(--s1);
+}
+.check-cell:hover { background: rgba(255,255,255,0.03); }
 .check-box {
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
-  border: 1.5px solid var(--b2);
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  border: 2px solid var(--b2);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
+  margin: 0 auto;
 }
 .check-box.done {
   border-color: transparent;
   background: rgba(0,255,157,0.15);
+  transform: scale(1.05);
 }
 .today-cell .check-box {
   box-shadow: 0 0 0 2px rgba(0,255,157,0.4);
   border-color: var(--accent);
 }
-.week-header {
-  background: var(--s2);
-  font-size: 9px;
-  font-weight: 600;
+.check-cell:active .check-box { transform: scale(0.95); }
+
+/* Analysis Section */
+.analysis-sidebar { 
+  background: var(--s1); 
+  border: 1px solid var(--b1); 
+  border-radius: 16px; 
+  overflow: hidden; 
+  margin-bottom: 20px;
 }
-.week-header-week1 { background: rgba(0,200,83,0.08); color: var(--w1); }
-.week-header-week2 { background: rgba(41,121,255,0.08); color: var(--w2); }
-.week-header-week3 { background: rgba(213,0,249,0.08); color: var(--w3); }
-.week-header-week4 { background: rgba(255,109,0,0.08); color: var(--w4); }
-.day-header {
-  font-size: 9px;
-  font-weight: 600;
+.analysis-head { 
+  padding: 14px 20px; 
+  background: var(--s2); 
+  font-size: 11px; 
+  color: var(--accent); 
+  font-weight: 600; 
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 1px;
 }
-.day-header.today .day-num {
-  color: var(--accent);
-  background: rgba(0,255,157,0.15);
-  padding: 2px 8px;
-  border-radius: 20px;
-  display: inline-block;
+.analysis-row { 
+  display: flex; 
+  align-items: center; 
+  padding: 12px 20px; 
+  gap: 16px; 
+  border-bottom: 1px solid var(--b1);
+}
+.analysis-row:last-child { border-bottom: none; }
+.analysis-bar-wrap { flex: 1; height: 8px; background: var(--s4); border-radius: 4px; overflow: hidden; }
+.analysis-bar { height: 100%; border-radius: 4px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.analysis-pct { 
+  font-family: 'JetBrains Mono', monospace; 
+  font-size: 11px; 
+  font-weight: 600;
+  color: var(--accent); 
+  min-width: 45px; 
+  text-align: right;
 }
 
-.analysis-sidebar { margin-top: 16px; background: var(--s1); border: 1px solid var(--b1); border-radius: var(--r2); overflow: hidden; }
-.analysis-head { height: 44px; border-bottom: 1px solid var(--b1); display: flex; align-items: center; padding: 0 16px; font-size: 10px; color: var(--text3); font-weight: 600; background: var(--s2); }
-.analysis-row { min-height: 44px; border-bottom: 1px solid var(--b1); display: flex; align-items: center; padding: 0 16px; gap: 12px; }
-.analysis-bar-wrap { flex: 1; height: 6px; background: var(--s4); border-radius: 3px; overflow: hidden; }
-.analysis-bar { height: 100%; border-radius: 3px; transition: width .6s; }
-.analysis-pct { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--accent); min-width: 40px; text-align: right; }
-
-.charts-section { display: grid; grid-template-rows: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-.chart-card { background: var(--s1); border: 1px solid var(--b1); border-radius: var(--r2); padding: 16px; }
-.chart-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
-.chart-title { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text2); }
-.chart-val { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--accent); }
-.chart-sub { font-size: 9px; color: var(--text3); }
-.chart-wrap { position: relative; width: 100%; height: 120px; }
+/* Charts */
+.charts-section { display: grid; grid-template-rows: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+.chart-card { background: var(--s1); border: 1px solid var(--b1); border-radius: 16px; padding: 20px; }
+.chart-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+.chart-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text2); font-weight: 500; }
+.chart-val { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--accent); }
+.chart-sub { font-size: 10px; color: var(--text3); margin-top: 4px; }
+.chart-wrap { position: relative; width: 100%; height: 140px; }
+.chart-badge { font-size: 10px; padding: 4px 10px; border-radius: 20px; font-family: 'JetBrains Mono', monospace; }
+.badge-up { background: rgba(0,255,157,0.1); color: var(--accent); }
+.badge-dn { background: rgba(255,107,53,0.1); color: var(--accent3); }
 
 /* Modal */
-.modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 2000; align-items: center; justify-content: center; }
+.modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000; align-items: center; justify-content: center; }
 .modal-bg.on { display: flex; }
-.modal { background: var(--s2); border: 1px solid var(--b2); border-radius: var(--r2); padding: 20px; width: 90%; max-width: 400px; max-height: 90vh; overflow-y: auto; }
-.modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 2px; margin-bottom: 16px; }
-.fg { margin-bottom: 12px; }
-.fl { font-size: 9px; color: var(--text3); margin-bottom: 4px; display: block; font-family: 'JetBrains Mono', monospace; }
-.fi { width: 100%; background: var(--s3); border: 1px solid var(--b2); border-radius: 6px; padding: 8px 10px; color: var(--text); font-size: 16px; font-family: 'Syne', sans-serif; outline: none; }
+.modal { background: var(--s2); border: 1px solid var(--b2); border-radius: 20px; padding: 24px; width: 90%; max-width: 420px; max-height: 85vh; overflow-y: auto; }
+.modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 2px; margin-bottom: 20px; color: var(--accent); }
+.fg { margin-bottom: 16px; }
+.fl { font-size: 10px; color: var(--text3); margin-bottom: 6px; display: block; font-family: 'JetBrains Mono', monospace; }
+.fi { width: 100%; background: var(--s3); border: 1px solid var(--b2); border-radius: 10px; padding: 10px 14px; color: var(--text); font-size: 14px; font-family: 'Syne', sans-serif; outline: none; }
 .fi:focus { border-color: var(--accent); }
-.color-row { display: flex; gap: 6px; flex-wrap: wrap; }
-.cpick { width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
-.cpick.sel { border-color: #fff; transform: scale(1.1); }
-.mactions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
-.btn-cancel { background: var(--s3); color: var(--text2); border: 1px solid var(--b1); border-radius: 6px; padding: 6px 14px; font-size: 11px; cursor: pointer; }
-.btn-save { background: var(--accent); color: #000; border: none; border-radius: 6px; padding: 6px 14px; font-size: 11px; font-weight: 700; cursor: pointer; }
-.frow { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.color-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.cpick { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; }
+.cpick.sel { border-color: #fff; transform: scale(1.15); }
+.mactions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; }
+.btn-cancel { background: var(--s3); color: var(--text2); border: 1px solid var(--b1); border-radius: 10px; padding: 8px 18px; font-size: 12px; cursor: pointer; }
+.btn-save { background: var(--accent); color: #000; border: none; border-radius: 10px; padding: 8px 18px; font-size: 12px; font-weight: 700; cursor: pointer; }
+.frow { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
 /* Task Page */
-.task-wrap { padding: 16px 20px; max-width: 1600px; margin: 0 auto; }
-.task-top { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 16px; }
-.task-info-card { background: var(--s1); border: 1px solid var(--b1); border-radius: var(--r2); padding: 16px; }
-.week-date-label { font-size: 9px; color: var(--text3); font-family: 'JetBrains Mono', monospace; margin-bottom: 6px; }
-.week-date-val { background: var(--accent); color: #000; border-radius: 6px; padding: 6px 10px; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; text-align: center; margin-bottom: 12px; }
-.task-overall-lbl { font-size: 9px; color: var(--text3); font-family: 'JetBrains Mono', monospace; margin-bottom: 6px; text-align: center; }
+.task-wrap { padding: 20px 24px; max-width: 1600px; margin: 0 auto; }
+.task-top { display: grid; grid-template-columns: 260px 1fr; gap: 20px; margin-bottom: 24px; }
+.task-info-card { background: var(--s1); border: 1px solid var(--b1); border-radius: 16px; padding: 20px; text-align: center; }
+.week-date-label { font-size: 10px; color: var(--text3); font-family: 'JetBrains Mono', monospace; margin-bottom: 8px; }
+.week-date-val { background: var(--accent); color: #000; border-radius: 10px; padding: 8px 12px; font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; text-align: center; margin-bottom: 16px; }
+.task-overall-lbl { font-size: 10px; color: var(--text3); font-family: 'JetBrains Mono', monospace; margin-bottom: 8px; }
 .ring-pos { position: relative; display: flex; justify-content: center; }
 .day-ring-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
-.score-pct { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--text); line-height: 1; }
-.overall-chart-card { background: var(--s1); border: 1px solid var(--b1); border-radius: var(--r2); padding: 16px; }
-.oc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
-.oc-title { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text2); }
-.oc-sub { font-size: 9px; color: var(--text3); }
-.oc-chart-wrap { position: relative; height: 100px; }
-.days-grid { display: flex; flex-direction: column; gap: 12px; }
-.day-col { background: var(--s1); border: 1px solid var(--b1); border-radius: var(--r2); overflow: hidden; }
-.day-col-header { padding: 10px 12px; border-bottom: 1px solid var(--b1); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 5px; }
-.day-col-name { font-size: 13px; font-weight: 600; color: var(--text); }
-.day-col-date { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text3); }
+.score-pct { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--text); line-height: 1; }
+.overall-chart-card { background: var(--s1); border: 1px solid var(--b1); border-radius: 16px; padding: 20px; }
+.oc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+.oc-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text2); }
+.oc-sub { font-size: 10px; color: var(--text3); }
+.oc-chart-wrap { position: relative; height: 120px; }
+.days-grid { display: flex; flex-direction: column; gap: 16px; }
+.day-col { background: var(--s1); border: 1px solid var(--b1); border-radius: 16px; overflow: hidden; }
+.day-col-header { padding: 14px 16px; border-bottom: 1px solid var(--b1); display: flex; align-items: center; justify-content: space-between; }
+.day-col-name { font-size: 14px; font-weight: 600; color: var(--text); }
+.day-col-date { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text3); }
 .day-col.today-day { border-color: rgba(0,255,157,0.3); }
-.day-ring-wrap { display: flex; justify-content: center; padding: 12px 0 8px; }
-.day-ring-pct { font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: var(--text); }
-.task-items { padding: 8px 10px; display: flex; flex-direction: column; gap: 5px; max-height: 200px; overflow-y: auto; }
-.task-item { display: flex; align-items: center; gap: 8px; font-size: 10px; color: var(--text2); padding: 4px 0; }
-.task-chk { width: 14px; height: 14px; border-radius: 3px; border: 1px solid var(--b3); flex-shrink: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.day-ring-wrap { display: flex; justify-content: center; padding: 16px 0 12px; }
+.day-ring-pct { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--text); }
+.task-items { padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; max-height: 240px; overflow-y: auto; }
+.task-item { display: flex; align-items: center; gap: 10px; font-size: 11px; color: var(--text2); padding: 6px 0; border-radius: 8px; }
+.task-item:hover { background: var(--s2); padding-left: 6px; }
+.task-chk { width: 16px; height: 16px; border-radius: 5px; border: 1.5px solid var(--b3); flex-shrink: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 .task-chk.done { background: var(--accent); border-color: var(--accent); color: #000; }
-.task-txt { line-height: 1.4; flex: 1; cursor: pointer; word-break: break-word; }
+.task-txt { line-height: 1.4; flex: 1; cursor: pointer; }
 .task-txt.done { text-decoration: line-through; color: var(--text3); }
-.task-actions { display: flex; gap: 3px; }
-.task-edit-btn, .task-delete-btn { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 9px; padding: 0 2px; }
-.add-task-btn { width: 100%; padding: 8px; background: none; border: none; border-top: 1px solid var(--b1); color: var(--text3); font-size: 10px; cursor: pointer; font-family: 'JetBrains Mono', monospace; }
+.task-actions { display: flex; gap: 6px; }
+.task-edit-btn, .task-delete-btn { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 10px; padding: 0 3px; }
+.task-edit-btn:hover { color: var(--accent); }
+.task-delete-btn:hover { color: #ff4444; }
+.add-task-btn { width: 100%; padding: 10px; background: none; border: none; border-top: 1px solid var(--b1); color: var(--text3); font-size: 11px; cursor: pointer; font-family: 'JetBrains Mono', monospace; transition: color 0.2s; }
+.add-task-btn:hover { color: var(--accent); }
 
 /* Calendar Page */
-.cal-wrap { padding: 16px 20px; max-width: 1600px; margin: 0 auto; }
-.cal-top { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
-.cal-month-display { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; }
-.cal-top-nav { display: flex; gap: 6px; order: -1; }
-.cal-nav-btn { background: var(--s3); border: 1px solid var(--b2); border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text2); font-size: 14px; }
-.cal-view-tabs { display: flex; gap: 3px; background: var(--s2); border-radius: 8px; padding: 3px; }
-.cvtab { padding: 4px 10px; border-radius: 5px; font-size: 10px; font-weight: 600; cursor: pointer; border: none; background: none; color: var(--text3); }
+.cal-wrap { padding: 20px 24px; max-width: 1600px; margin: 0 auto; }
+.cal-top { display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px; }
+.cal-month-display { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 2px; }
+.cal-top-nav { display: flex; gap: 8px; order: -1; }
+.cal-nav-btn { background: var(--s2); border: 1px solid var(--b2); border-radius: 10px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text2); font-size: 16px; }
+.cal-view-tabs { display: flex; gap: 6px; background: var(--s2); border-radius: 12px; padding: 4px; }
+.cvtab { padding: 6px 14px; border-radius: 8px; font-size: 11px; font-weight: 600; cursor: pointer; border: none; background: none; color: var(--text3); }
 .cvtab.on { background: var(--s4); color: var(--text); }
-.btn-new-ev { background: var(--accent); color: #000; border: none; border-radius: 6px; padding: 8px 12px; font-size: 11px; font-weight: 700; cursor: pointer; width: 100%; }
-.cal-month-grid { background: var(--s1); border: 1px solid var(--b1); border-radius: var(--r2); overflow-x: auto; }
-.cal-day-names { display: grid; grid-template-columns: repeat(7, 1fr); border-bottom: 1px solid var(--b1); min-width: 500px; }
-.cal-dn { padding: 8px; text-align: center; font-size: 9px; font-family: 'JetBrains Mono', monospace; color: var(--text3); }
-.cal-cells { display: grid; grid-template-columns: repeat(7, 1fr); min-width: 500px; }
-.cal-cell { min-height: 90px; border-right: 1px solid var(--b1); border-bottom: 1px solid var(--b1); padding: 6px; cursor: pointer; }
+.btn-new-ev { background: var(--accent); color: #000; border: none; border-radius: 10px; padding: 10px 16px; font-size: 12px; font-weight: 700; cursor: pointer; width: 100%; }
+.cal-month-grid { background: var(--s1); border: 1px solid var(--b1); border-radius: 16px; overflow-x: auto; }
+.cal-day-names { display: grid; grid-template-columns: repeat(7, 1fr); border-bottom: 1px solid var(--b1); min-width: 560px; }
+.cal-dn { padding: 12px; text-align: center; font-size: 10px; font-family: 'JetBrains Mono', monospace; color: var(--text3); font-weight: 600; }
+.cal-cells { display: grid; grid-template-columns: repeat(7, 1fr); min-width: 560px; }
+.cal-cell { min-height: 100px; border-right: 1px solid var(--b1); border-bottom: 1px solid var(--b1); padding: 8px; cursor: pointer; transition: background 0.15s; }
 .cal-cell:hover { background: var(--s2); }
-.cal-dn2 { font-size: 11px; font-weight: 600; color: var(--text2); margin-bottom: 4px; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+.cal-dn2 { font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 6px; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
 .cal-cell.is-today .cal-dn2 { background: var(--accent); color: #000; }
-.cal-ev { font-size: 9px; padding: 2px 4px; border-radius: 4px; margin-bottom: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
+.cal-ev { font-size: 9px; padding: 4px 6px; border-radius: 6px; margin-bottom: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
 
 /* Productivity Page */
-.prod-wrap { padding: 16px 20px; max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
-.pcard { background: var(--s1); border: 1px solid var(--b1); border-radius: var(--r2); padding: 20px; }
-.pcard-title { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 2px; color: var(--text); margin-bottom: 4px; }
-.pcard-sub { font-size: 9px; color: var(--text3); font-family: 'JetBrains Mono', monospace; margin-bottom: 16px; }
-.pomo-modes { display: flex; gap: 4px; margin-bottom: 20px; flex-wrap: wrap; }
-.pomo-mode { flex: 1; padding: 8px 4px; border-radius: 6px; font-size: 10px; font-weight: 600; cursor: pointer; border: none; background: var(--s3); color: var(--text3); font-family: 'JetBrains Mono', monospace; min-width: 60px; }
-.pomo-mode.on { background: var(--s4); color: var(--text); }
-.pomo-ring-wrap { position: relative; display: flex; justify-content: center; margin-bottom: 20px; }
+.prod-wrap { padding: 20px 24px; max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+.pcard { background: var(--s1); border: 1px solid var(--b1); border-radius: 20px; padding: 24px; }
+.pcard-title { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 2px; color: var(--text); margin-bottom: 6px; }
+.pcard-sub { font-size: 10px; color: var(--text3); font-family: 'JetBrains Mono', monospace; margin-bottom: 20px; }
+.pomo-modes { display: flex; gap: 6px; margin-bottom: 24px; flex-wrap: wrap; }
+.pomo-mode { flex: 1; padding: 10px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; cursor: pointer; border: none; background: var(--s2); color: var(--text3); font-family: 'JetBrains Mono', monospace; transition: all 0.2s; }
+.pomo-mode.on { background: var(--accent); color: #000; }
+.pomo-ring-wrap { position: relative; display: flex; justify-content: center; margin-bottom: 24px; }
 .pomo-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
-.pomo-time { font-family: 'Bebas Neue', sans-serif; font-size: 42px; color: var(--text); line-height: 1; }
-.pomo-phase-lbl { font-size: 9px; color: var(--text3); font-family: 'JetBrains Mono', monospace; margin-top: 2px; }
-.pomo-controls { display: flex; gap: 10px; justify-content: center; margin-bottom: 16px; flex-wrap: wrap; }
-.pbtn { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--b2); background: var(--s3); color: var(--text2); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; }
-.pbtn.main { width: 54px; height: 54px; background: var(--accent); border: none; color: #000; font-size: 20px; }
-.pomo-dots { display: flex; gap: 6px; justify-content: center; margin-bottom: 16px; flex-wrap: wrap; }
-.pdot { width: 8px; height: 8px; border-radius: 50%; background: var(--b2); }
-.pdot.done { background: var(--accent); }
-.pomo-task-lbl { font-size: 9px; color: var(--text3); font-family: 'JetBrains Mono', monospace; text-align: center; margin-bottom: 4px; }
-.pomo-task-select { width: 100%; background: var(--s3); border: 1px solid var(--b2); border-radius: 8px; padding: 10px 12px; color: var(--text); font-size: 16px; font-family: 'Syne', sans-serif; margin-top: 8px; cursor: pointer; -webkit-appearance: none; appearance: none; }
-.pomo-task-name { font-size: 12px; color: var(--text2); text-align: center; margin-top: 8px; font-style: italic; }
-.custom-time-input { display: none; margin-bottom: 15px; text-align: center; padding: 10px; background: var(--s2); border-radius: 8px; }
-.custom-time-input input { width: 80px; background: var(--s3); border: 1px solid var(--b2); border-radius: 6px; padding: 8px; color: var(--text); text-align: center; font-size: 16px; }
-.custom-time-input button { background: var(--accent); color: #000; border: none; border-radius: 6px; padding: 6px 12px; cursor: pointer; font-weight: 700; margin-left: 8px; font-size: 11px; }
+.pomo-time { font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: var(--text); line-height: 1; }
+.pomo-phase-lbl { font-size: 10px; color: var(--text3); font-family: 'JetBrains Mono', monospace; margin-top: 4px; }
+.pomo-controls { display: flex; gap: 12px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+.pbtn { width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--b2); background: var(--s2); color: var(--text2); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: all 0.2s; }
+.pbtn:hover { color: var(--accent); border-color: var(--accent); }
+.pbtn.main { width: 60px; height: 60px; background: var(--accent); border: none; color: #000; font-size: 22px; }
+.pbtn.main:hover { background: #00e88a; }
+.pomo-dots { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+.pdot { width: 10px; height: 10px; border-radius: 50%; background: var(--b2); transition: all 0.3s; }
+.pdot.done { background: var(--accent); transform: scale(1.2); }
+.pomo-task-lbl { font-size: 10px; color: var(--text3); font-family: 'JetBrains Mono', monospace; text-align: center; margin-bottom: 6px; }
+.pomo-task-select { width: 100%; background: var(--s2); border: 1px solid var(--b2); border-radius: 10px; padding: 12px; color: var(--text); font-size: 14px; font-family: 'Syne', sans-serif; margin-top: 8px; cursor: pointer; }
+.pomo-task-name { font-size: 12px; color: var(--text2); text-align: center; margin-top: 10px; font-style: italic; }
+.custom-time-input { display: none; margin-bottom: 16px; text-align: center; padding: 12px; background: var(--s2); border-radius: 12px; }
+.custom-time-input input { width: 90px; background: var(--s3); border: 1px solid var(--b2); border-radius: 8px; padding: 10px; color: var(--text); text-align: center; font-size: 16px; }
+.custom-time-input button { background: var(--accent); color: #000; border: none; border-radius: 8px; padding: 10px 16px; cursor: pointer; font-weight: 700; margin-left: 10px; font-size: 12px; }
 .quote-card { flex: 1; }
-.quote-mark-big { font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: var(--accent); opacity: .12; line-height: .7; margin-bottom: -10px; }
-.quote-body { font-size: 14px; font-weight: 400; color: var(--text); line-height: 1.5; font-style: italic; margin-bottom: 12px; min-height: 80px; }
-.quote-auth { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--accent); }
-.quote-nav-row { display: flex; gap: 8px; align-items: center; margin-top: 12px; flex-wrap: wrap; }
-.qdot { width: 5px; height: 5px; border-radius: 50%; background: var(--b2); cursor: pointer; }
-.qdot.on { background: var(--accent); width: 14px; border-radius: 3px; }
-.qnav-btn { background: var(--s3); border: 1px solid var(--b1); border-radius: 6px; padding: 4px 10px; color: var(--text2); cursor: pointer; font-size: 11px; }
-.ev-modal { background: var(--s2); border: 1px solid var(--b2); border-radius: var(--r2); padding: 20px; width: 90%; max-width: 420px; max-height: 85vh; overflow-y: auto; }
-.repeat-opts { display: flex; gap: 6px; flex-wrap: wrap; }
-.rep-opt { padding: 4px 8px; border-radius: 20px; font-size: 9px; cursor: pointer; background: var(--s3); border: 1px solid var(--b1); color: var(--text2); font-family: 'JetBrains Mono', monospace; }
+.quote-mark-big { font-family: 'Bebas Neue', sans-serif; font-size: 60px; color: var(--accent); opacity: 0.12; line-height: 0.7; margin-bottom: -12px; }
+.quote-body { font-size: 15px; font-weight: 400; color: var(--text); line-height: 1.6; font-style: italic; margin-bottom: 14px; min-height: 90px; }
+.quote-auth { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); }
+.quote-nav-row { display: flex; gap: 10px; align-items: center; margin-top: 16px; flex-wrap: wrap; }
+.qdot { width: 6px; height: 6px; border-radius: 50%; background: var(--b2); cursor: pointer; transition: all 0.2s; }
+.qdot.on { background: var(--accent); width: 16px; border-radius: 4px; }
+.qnav-btn { background: var(--s2); border: 1px solid var(--b1); border-radius: 8px; padding: 6px 12px; color: var(--text2); cursor: pointer; font-size: 12px; transition: all 0.2s; }
+.qnav-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+.ev-modal { background: var(--s2); border: 1px solid var(--b2); border-radius: 20px; padding: 24px; width: 90%; max-width: 460px; max-height: 85vh; overflow-y: auto; }
+.repeat-opts { display: flex; gap: 8px; flex-wrap: wrap; }
+.rep-opt { padding: 6px 12px; border-radius: 20px; font-size: 10px; cursor: pointer; background: var(--s3); border: 1px solid var(--b1); color: var(--text2); font-family: 'JetBrains Mono', monospace; transition: all 0.2s; }
 .rep-opt.sel { background: var(--accent); color: #000; }
-.ev-color-row { display: flex; gap: 6px; flex-wrap: wrap; }
-.ev-cpick { width: 22px; height: 22px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
-.ev-cpick.sel { border-color: #fff; transform: scale(1.1); }
-.time-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center; }
-.save-indicator { position: fixed; bottom: 16px; right: 16px; background: var(--accent); color: #000; padding: 6px 12px; border-radius: 20px; font-size: 10px; font-family: 'JetBrains Mono', monospace; opacity: 0; transition: opacity .3s; z-index: 1000; pointer-events: none; }
+.ev-color-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.ev-cpick { width: 26px; height: 26px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; }
+.ev-cpick.sel { border-color: #fff; transform: scale(1.15); }
+.time-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; }
+.save-indicator { position: fixed; bottom: 20px; right: 20px; background: var(--accent); color: #000; padding: 8px 16px; border-radius: 30px; font-size: 11px; font-family: 'JetBrains Mono', monospace; opacity: 0; transition: opacity 0.3s; z-index: 1000; pointer-events: none; }
 .save-indicator.show { opacity: 1; }
 
 /* Mobile */
@@ -352,23 +413,26 @@ nav { display: none; }
   .main-content.expanded { margin-left: 0; }
   .sidebar.collapsed { transform: translateX(-100%); }
   .sidebar-toggle { left: 12px; top: 12px; z-index: 1002; }
-  .tracker-wrap, .task-wrap, .cal-wrap, .prod-wrap { padding: 12px; padding-top: 8px; }
-  .habit-name-cell { min-width: 130px; }
-  .check-box { width: 24px; height: 24px; }
-  .day-header { font-size: 8px; }
-  .week-header { font-size: 8px; }
+  .tracker-wrap, .task-wrap, .cal-wrap, .prod-wrap { padding: 12px; }
+  .month-title { font-size: 24px; }
+  .mstat { padding: 6px 12px; min-width: 65px; }
+  .mstat-val { font-size: 16px; }
+  .habit-name-cell { min-width: 160px; }
+  .check-box { width: 28px; height: 28px; }
+  .task-top { grid-template-columns: 1fr; }
+  .month-header { flex-direction: column; align-items: flex-start; }
+  .month-stats { width: 100%; justify-content: space-between; }
 }
 
 /* Desktop */
 @media (min-width: 768px) {
-  .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; }
+  .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 16px; }
   .cal-top { flex-direction: row; align-items: center; }
   .btn-new-ev { width: auto; }
-  .prod-wrap { display: grid; grid-template-columns: 360px 1fr; gap: 20px; }
-  .pomo-time { font-size: 58px; }
+  .prod-wrap { display: grid; grid-template-columns: 380px 1fr; gap: 24px; }
+  .pomo-time { font-size: 64px; }
   .month-title { font-size: 36px; }
-  .mstat-val { font-size: 22px; }
-  .tracker-wrap, .task-wrap, .cal-wrap, .prod-wrap { padding: 20px 28px; }
+  .tracker-wrap, .task-wrap, .cal-wrap, .prod-wrap { padding: 24px 32px; }
   .sidebar-toggle { left: 24px; top: 20px; }
   .main-content { margin-left: var(--sidebar-width); }
   .main-content.expanded { margin-left: 0; }
@@ -394,7 +458,7 @@ nav { display: none; }
   <div class="page on" id="page-tracker">
     <div class="tracker-wrap">
       <div class="month-header">
-        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
           <div class="month-title" id="tracker-month-title"></div>
           <div class="month-nav"><button class="mnav-btn" onclick="trackerNav(-1)">‹</button><button class="mnav-btn" onclick="trackerNav(1)">›</button></div>
         </div>
@@ -402,19 +466,19 @@ nav { display: none; }
           <div class="mstat"><div class="mstat-val" id="stat-habits">0</div><div class="mstat-lbl">HABITS</div></div>
           <div class="mstat"><div class="mstat-val" id="stat-completed">0</div><div class="mstat-lbl">DONE</div></div>
           <div class="mstat"><div class="mstat-val" id="stat-progress">0%</div><div class="mstat-lbl">PROGRESS</div></div>
-          <button class="btn-save" onclick="openHabMod()" style="margin-left:4px;padding:4px 12px;font-size:11px;">+ Add</button>
+          <button class="btn-save" onclick="openHabMod()" style="padding:8px 18px;font-size:12px;">+ Add Habit</button>
         </div>
       </div>
       
-      <div class="habit-table-container" id="habit-table-container">
-        <table class="habit-table" id="habit-table">
+      <div class="habit-table-container">
+        <table class="habit-table">
           <thead id="table-header"></thead>
           <tbody id="table-body"></tbody>
         </table>
       </div>
       
       <div class="analysis-sidebar">
-        <div class="analysis-head">ANALYSIS</div>
+        <div class="analysis-head">📈 ANALYSIS</div>
         <div id="analysis-rows"></div>
       </div>
       
@@ -428,7 +492,7 @@ nav { display: none; }
   <div class="page" id="page-tasks">
     <div class="task-wrap">
       <div class="task-top">
-        <div class="task-info-card"><div class="week-date-label">WEEK START</div><div class="week-date-val" id="task-week-start"></div><div class="task-overall-lbl">OVERALL COMPLETION</div><div style="display:flex;justify-content:center;margin-top:8px;"><div class="ring-pos"><svg width="90" height="90" viewBox="0 0 110 110"><circle cx="55" cy="55" r="46" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8"/><circle id="overall-ring" cx="55" cy="55" r="46" fill="none" stroke="#00ff9d" stroke-width="8" stroke-linecap="round" stroke-dasharray="289" stroke-dashoffset="289" style="transform:rotate(-90deg);transform-origin:55px 55px;transition:stroke-dashoffset .6s;"/></svg><div class="day-ring-center"><div class="score-pct" id="overall-pct">0%</div></div></div></div></div>
+        <div class="task-info-card"><div class="week-date-label">WEEK START</div><div class="week-date-val" id="task-week-start"></div><div class="task-overall-lbl">OVERALL COMPLETION</div><div style="display:flex;justify-content:center;margin-top:8px;"><div class="ring-pos"><svg width="100" height="100" viewBox="0 0 110 110"><circle cx="55" cy="55" r="46" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8"/><circle id="overall-ring" cx="55" cy="55" r="46" fill="none" stroke="#00ff9d" stroke-width="8" stroke-linecap="round" stroke-dasharray="289" stroke-dashoffset="289" style="transform:rotate(-90deg);transform-origin:55px 55px;transition:stroke-dashoffset .6s;"/></svg><div class="day-ring-center"><div class="score-pct" id="overall-pct">0%</div></div></div></div></div>
         <div class="overall-chart-card"><div class="oc-header"><div><div class="oc-title">WEEK COMPLETION BY DAY</div><div class="oc-sub">Daily task done rate</div></div><span class="chart-badge badge-up" id="week-chart-badge">0/0 done</span></div><div class="oc-chart-wrap"><canvas id="weekBarChart"></canvas></div></div>
       </div>
       <div class="days-grid" id="days-grid"></div>
@@ -445,15 +509,15 @@ nav { display: none; }
 
   <div class="page" id="page-productivity">
     <div class="prod-wrap">
-      <div class="prod-left"><div class="pcard"><div class="pcard-title">Pomodoro</div><div class="pcard-sub">Focus timer — stays running in background</div><div class="pomo-modes"><button class="pomo-mode on" onclick="setPomoMode('focus',25,this)">Focus</button><button class="pomo-mode" onclick="setPomoMode('short',5,this)">Short</button><button class="pomo-mode" onclick="setPomoMode('long',15,this)">Long</button><button class="pomo-mode" onclick="setPomoMode('custom',null,this)">Custom</button><button class="pomo-mode" onclick="setStopwatchMode()">Stopwatch</button></div><div id="custom-time-input" class="custom-time-input"><input type="number" id="custom-minutes" min="1" max="180" value="25"><button onclick="applyCustomTime()">Set</button></div><div class="pomo-ring-wrap"><svg width="180" height="180" viewBox="0 0 200 200"><circle cx="100" cy="100" r="88" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="8"/><circle id="pomo-ring" cx="100" cy="100" r="88" fill="none" stroke="#00ff9d" stroke-width="8" stroke-linecap="round" stroke-dasharray="552.9" stroke-dashoffset="0" style="transform:rotate(-90deg);transform-origin:100px 100px;transition:stroke-dashoffset 0.3s linear;"/></svg><div class="pomo-center"><div class="pomo-time" id="pomo-time">25:00</div><div class="pomo-phase-lbl" id="pomo-phase">FOCUS</div></div></div><div class="pomo-controls"><button class="pbtn" onclick="resetPomo()">&#8635;</button><button class="pbtn main" id="pomo-play-btn" onclick="togglePomo()">&#9654;</button><button class="pbtn" onclick="skipPomo()">&#9197;</button></div><div class="pomo-dots" id="pomo-dots"><div class="pdot"></div><div class="pdot"></div><div class="pdot"></div><div class="pdot"></div></div><div class="pomo-task-lbl">Currently working on</div><select id="pomo-task-selector" class="pomo-task-select" onclick="event.stopPropagation();"><option value="">— select a task —</option></select><div class="pomo-task-name" id="pomo-task-name">— select a task —</div></div></div>
-      <div class="pcard quote-card"><div class="pcard-title">Mindset Fuel</div><div class="pcard-sub">Trading · Success · Mental Hardness</div><div class="quote-mark-big">"</div><div class="quote-body" id="q-body"></div><div class="quote-auth" id="q-auth"></div><div class="quote-nav-row"><div id="q-dots" style="display:flex;gap:5px;flex:1;flex-wrap:wrap;"></div><button class="qnav-btn" onclick="prevQ()">←</button><button class="qnav-btn" onclick="nextQ()">→</button></div></div>
+      <div class="prod-left"><div class="pcard"><div class="pcard-title">🍅 Pomodoro Timer</div><div class="pcard-sub">Focus timer — stays running in background</div><div class="pomo-modes"><button class="pomo-mode on" onclick="setPomoMode('focus',25,this)">Focus</button><button class="pomo-mode" onclick="setPomoMode('short',5,this)">Short</button><button class="pomo-mode" onclick="setPomoMode('long',15,this)">Long</button><button class="pomo-mode" onclick="setPomoMode('custom',null,this)">Custom</button><button class="pomo-mode" onclick="setStopwatchMode()">Stopwatch</button></div><div id="custom-time-input" class="custom-time-input"><input type="number" id="custom-minutes" min="1" max="180" value="25"><button onclick="applyCustomTime()">Set Timer</button></div><div class="pomo-ring-wrap"><svg width="200" height="200" viewBox="0 0 200 200"><circle cx="100" cy="100" r="88" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="8"/><circle id="pomo-ring" cx="100" cy="100" r="88" fill="none" stroke="#00ff9d" stroke-width="8" stroke-linecap="round" stroke-dasharray="552.9" stroke-dashoffset="0" style="transform:rotate(-90deg);transform-origin:100px 100px;transition:stroke-dashoffset 0.3s linear;"/></svg><div class="pomo-center"><div class="pomo-time" id="pomo-time">25:00</div><div class="pomo-phase-lbl" id="pomo-phase">FOCUS</div></div></div><div class="pomo-controls"><button class="pbtn" onclick="resetPomo()">⟳</button><button class="pbtn main" id="pomo-play-btn" onclick="togglePomo()">▶</button><button class="pbtn" onclick="skipPomo()">⏩</button></div><div class="pomo-dots" id="pomo-dots"><div class="pdot"></div><div class="pdot"></div><div class="pdot"></div><div class="pdot"></div></div><div class="pomo-task-lbl">Currently working on</div><select id="pomo-task-selector" class="pomo-task-select"><option value="">— select a task —</option></select><div class="pomo-task-name" id="pomo-task-name">— select a task —</div></div></div>
+      <div class="pcard quote-card"><div class="pcard-title">💭 Mindset Fuel</div><div class="pcard-sub">Trading · Success · Mental Hardness</div><div class="quote-mark-big">"</div><div class="quote-body" id="q-body"></div><div class="quote-auth" id="q-auth"></div><div class="quote-nav-row"><div id="q-dots" style="display:flex;gap:5px;flex:1;flex-wrap:wrap;"></div><button class="qnav-btn" onclick="prevQ()">←</button><button class="qnav-btn" onclick="nextQ()">→</button></div></div>
     </div>
   </div>
 </div>
 
-<div class="modal-bg" id="hab-modal"><div class="modal"><div class="modal-title">New Habit</div><div class="fg"><label class="fl">NAME</label><input class="fi" id="hab-name" placeholder="e.g. Morning Run"/></div><div class="frow"><div class="fg"><label class="fl">CATEGORY</label><select class="fi" id="hab-cat"><option>Health</option><option>Fitness</option><option>Learning</option><option>Mindfulness</option><option>Productivity</option></select></div><div class="fg"><label class="fl">FREQUENCY</label><select class="fi" id="hab-freq"><option>Daily</option><option>Weekdays</option><option>Weekends</option></select></div></div><div class="fg"><label class="fl">COLOR</label><div class="color-row"><div class="cpick sel" style="background:#00ff9d" data-c="#00ff9d" onclick="selHabColor(this)"></div><div class="cpick" style="background:#7c6fff" data-c="#7c6fff" onclick="selHabColor(this)"></div><div class="cpick" style="background:#ff6b35" data-c="#ff6b35" onclick="selHabColor(this)"></div><div class="cpick" style="background:#f472b6" data-c="#f472b6" onclick="selHabColor(this)"></div><div class="cpick" style="background:#2979ff" data-c="#2979ff" onclick="selHabColor(this)"></div><div class="cpick" style="background:#d500f9" data-c="#d500f9" onclick="selHabColor(this)"></div><div class="cpick" style="background:#ffea00" data-c="#ffea00" onclick="selHabColor(this)"></div><div class="cpick" style="background:#00e5ff" data-c="#00e5ff" onclick="selHabColor(this)"></div></div></div><div class="mactions"><button class="btn-cancel" onclick="closeMod('hab-modal')">Cancel</button><button class="btn-save" onclick="addHabit()">Add</button></div></div></div>
-<div class="modal-bg" id="task-modal"><div class="modal"><div class="modal-title">Add Task</div><div class="fg"><label class="fl">TASK</label><input class="fi" id="task-input" placeholder="e.g. Review proposal"/></div><input type="hidden" id="task-day-idx"/><div class="mactions"><button class="btn-cancel" onclick="closeMod('task-modal')">Cancel</button><button class="btn-save" onclick="addTask()">Add</button></div></div></div>
-<div class="modal-bg" id="ev-modal"><div class="ev-modal"><div class="modal-title" id="ev-modal-title">New Event</div><div class="fg"><label class="fl">TITLE</label><input class="fi" id="ev-title" placeholder="e.g. Team meeting"/></div><div class="fg"><label class="fl">DATE</label><input class="fi" id="ev-date" type="date"/></div><div class="fg"><label class="fl">TIME</label><div class="time-row"><input class="fi" id="ev-start" type="time" value="09:00"/><div class="time-sep">→</div><input class="fi" id="ev-end" type="time" value="10:00"/></div></div><div class="fg"><label class="fl">REPEAT</label><div class="repeat-opts"><div class="rep-opt sel" data-r="none" onclick="selRepeat(this)">None</div><div class="rep-opt" data-r="daily" onclick="selRepeat(this)">Daily</div><div class="rep-opt" data-r="weekdays" onclick="selRepeat(this)">Weekdays</div><div class="rep-opt" data-r="weekly" onclick="selRepeat(this)">Weekly</div><div class="rep-opt" data-r="monthly" onclick="selRepeat(this)">Monthly</div></div></div><div class="fg"><label class="fl">COLOR</label><div class="ev-color-row"><div class="ev-cpick sel" style="background:#7c6fff" data-c="#7c6fff" onclick="selEvColor(this)"></div><div class="ev-cpick" style="background:#00ff9d" data-c="#00ff9d" onclick="selEvColor(this)"></div><div class="ev-cpick" style="background:#ff6b35" data-c="#ff6b35" onclick="selEvColor(this)"></div><div class="ev-cpick" style="background:#f472b6" data-c="#f472b6" onclick="selEvColor(this)"></div><div class="ev-cpick" style="background:#2979ff" data-c="#2979ff" onclick="selEvColor(this)"></div><div class="ev-cpick" style="background:#d500f9" data-c="#d500f9" onclick="selEvColor(this)"></div><div class="ev-cpick" style="background:#ffea00" data-c="#ffea00" onclick="selEvColor(this)"></div><div class="ev-cpick" style="background:#00e5ff" data-c="#00e5ff" onclick="selEvColor(this)"></div></div></div><div class="fg"><label class="fl">NOTES</label><input class="fi" id="ev-notes" placeholder="Details..."/></div><div class="mactions"><button class="btn-cancel" onclick="closeMod('ev-modal')">Cancel</button><button class="btn-save" onclick="saveEvent()">Save</button></div></div></div>
+<div class="modal-bg" id="hab-modal"><div class="modal"><div class="modal-title">✨ New Habit</div><div class="fg"><label class="fl">HABIT NAME</label><input class="fi" id="hab-name" placeholder="e.g. Morning Run"/></div><div class="frow"><div class="fg"><label class="fl">CATEGORY</label><select class="fi" id="hab-cat"><option>Health</option><option>Fitness</option><option>Learning</option><option>Mindfulness</option><option>Productivity</option></select></div><div class="fg"><label class="fl">FREQUENCY</label><select class="fi" id="hab-freq"><option>Daily</option><option>Weekdays</option><option>Weekends</option></select></div></div><div class="fg"><label class="fl">COLOR</label><div class="color-row"><div class="cpick sel" style="background:#00ff9d" data-c="#00ff9d" onclick="selHabColor(this)"></div><div class="cpick" style="background:#7c6fff" data-c="#7c6fff" onclick="selHabColor(this)"></div><div class="cpick" style="background:#ff6b35" data-c="#ff6b35" onclick="selHabColor(this)"></div><div class="cpick" style="background:#f472b6" data-c="#f472b6" onclick="selHabColor(this)"></div><div class="cpick" style="background:#2979ff" data-c="#2979ff" onclick="selHabColor(this)"></div><div class="cpick" style="background:#d500f9" data-c="#d500f9" onclick="selHabColor(this)"></div><div class="cpick" style="background:#ffea00" data-c="#ffea00" onclick="selHabColor(this)"></div><div class="cpick" style="background:#00e5ff" data-c="#00e5ff" onclick="selHabColor(this)"></div></div></div><div class="mactions"><button class="btn-cancel" onclick="closeMod('hab-modal')">Cancel</button><button class="btn-save" onclick="addHabit()">Add Habit</button></div></div></div>
+<div class="modal-bg" id="task-modal"><div class="modal"><div class="modal-title">📝 Add Task</div><div class="fg"><label class="fl">TASK</label><input class="fi" id="task-input" placeholder="e.g. Review proposal"/></div><input type="hidden" id="task-day-idx"/><div class="mactions"><button class="btn-cancel" onclick="closeMod('task-modal')">Cancel</button><button class="btn-save" onclick="addTask()">Add Task</button></div></div></div>
+<div class="modal-bg" id="ev-modal"><div class="ev-modal"><div class="modal-title" id="ev-modal-title">📅 New Event</div><div class="fg"><label class="fl">TITLE</label><input class="fi" id="ev-title" placeholder="e.g. Team meeting"/></div><div class="fg"><label class="fl">DATE</label><input class="fi" id="ev-date" type="date"/></div><div class="fg"><label class="fl">TIME</label><div class="time-row"><input class="fi" id="ev-start" type="time" value="09:00"/><div class="time-sep">→</div><input class="fi" id="ev-end" type="time" value="10:00"/></div></div><div class="fg"><label class="fl">REPEAT</label><div class="repeat-opts"><div class="rep-opt sel" data-r="none" onclick="selRepeat(this)">None</div><div class="rep-opt" data-r="daily" onclick="selRepeat(this)">Daily</div><div class="rep-opt" data-r="weekdays" onclick="selRepeat(this)">Weekdays</div><div class="rep-opt" data-r="weekly" onclick="selRepeat(this)">Weekly</div><div class="rep-opt" data-r="monthly" onclick="selRepeat(this)">Monthly</div></div></div><div class="fg"><label class="fl">COLOR</label><div class="ev-color-row"><div class="ev-cpick sel" style="background:#7c6fff" data-c="#7c6fff" onclick="selEvColor(this)"></div><div class="ev-cpick" style="background:#00ff9d" data-c="#00ff9d" onclick="selEvColor(this)"></div><div class="ev-cpick" style="background:#ff6b35" data-c="#ff6b35" onclick="selEvColor(this)"></div><div class="ev-cpick" style="background:#f472b6" data-c="#f472b6" onclick="selEvColor(this)"></div><div class="ev-cpick" style="background:#2979ff" data-c="#2979ff" onclick="selEvColor(this)"></div><div class="ev-cpick" style="background:#d500f9" data-c="#d500f9" onclick="selEvColor(this)"></div><div class="ev-cpick" style="background:#ffea00" data-c="#ffea00" onclick="selEvColor(this)"></div><div class="ev-cpick" style="background:#00e5ff" data-c="#00e5ff" onclick="selEvColor(this)"></div></div></div><div class="fg"><label class="fl">NOTES</label><input class="fi" id="ev-notes" placeholder="Additional details..."/></div><div class="mactions"><button class="btn-cancel" onclick="closeMod('ev-modal')">Cancel</button><button class="btn-save" onclick="saveEvent()">Save Event</button></div></div></div>
 <div class="save-indicator" id="save-indicator">✓ Saved</div>
 
 <script>
@@ -598,7 +662,6 @@ function renderTracker(){
   
   // Build week groups
   let weeks = [];
-  let currentWeek = [];
   for(let d=1; d<=dim; d++){
     const weekNum = getWeekNumber(d, firstDayOfMonth);
     if(weeks[weekNum] === undefined) weeks[weekNum] = [];
@@ -614,14 +677,14 @@ function renderTracker(){
     const weekClass = wi===0?'week-header-week1':wi===1?'week-header-week2':wi===2?'week-header-week3':'week-header-week4';
     theadHtml += `<th colspan="${weekDays.length}" class="week-header ${weekClass}">WEEK ${wi+1}</th>`;
   }
-  theadHtml += '</tr><tr>';
+  theadHtml += '</tr>';
   theadHtml += '<th class="habit-name-cell"></th>';
   for(let wi=0; wi<weeks.length; wi++){
     for(let d of weeks[wi]){
       const date = new Date(y,m,d);
       const dow = date.getDay();
       const isToday = d === todayKey;
-      theadHtml += `<th class="day-header ${isToday ? 'today' : ''}"><div>${DAYS_SHORT[dow]}</div><div class="day-num">${d}</div></th>`;
+      theadHtml += `<th class="day-header ${isToday ? 'today' : ''}"><div class="day-name">${DAYS_SHORT[dow]}</div><div class="day-num">${d}</div></th>`;
     }
   }
   theadHtml += '</tr>';
@@ -637,7 +700,7 @@ function renderTracker(){
         const key = `${y}-${m+1}-${d}`;
         const done = habit.checks[key] === 1;
         const isToday = d === todayKey;
-        tbodyHtml += `<td class="check-cell ${isToday ? 'today-cell' : ''}" onclick="toggleCheck(${habit.id},${y},${m},${d})"><div class="check-box ${done ? 'done' : ''}" style="${done ? `border-color:${habit.color};background:rgba(${hexToRgb(habit.color)},0.15);` : ''}">${done ? `<svg width="14" height="14" viewBox="0 0 10 10"><polyline points="1.5,5 4,7.5 8.5,2.5" fill="none" stroke="${habit.color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>` : ''}</div></td>`;
+        tbodyHtml += `<td class="check-cell ${isToday ? 'today-cell' : ''}" onclick="toggleCheck(${habit.id},${y},${m},${d})"><div class="check-box ${done ? 'done' : ''}" style="${done ? `border-color:${habit.color};background:rgba(${hexToRgb(habit.color)},0.15);` : ''}">${done ? `<svg width="16" height="16" viewBox="0 0 10 10"><polyline points="1.5,5 4,7.5 8.5,2.5" fill="none" stroke="${habit.color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>` : ''}</div></td>`;
       }
     }
     tbodyHtml += '</tr>';
@@ -704,7 +767,7 @@ function renderTasks(){
     const day=addDays(ws,i), key=fmtDateISO(day), isToday=day.toDateString()===today.toDateString();
     const tasks=allTasks[key]||[], done=tasks.filter(t=>t.done).length, total=tasks.length, pct=total>0?Math.round(done/total*100):0;
     const dashOffset=CIRC_DAY*(1-pct/100);
-    html+=`<div class="day-col${isToday?' today-day':''}"><div class="day-col-header"><div class="day-col-name">${WEEK_DAYS[i].substring(0,3)}</div><div class="day-col-date">${day.getDate()}/${day.getMonth()+1}</div></div><div class="day-ring-wrap"><div class="ring-pos"><svg width="70" height="70" viewBox="0 0 90 90"><circle cx="45" cy="45" r="38" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="6"/><circle cx="45" cy="45" r="38" fill="none" stroke="${isToday?'#00ff9d':'rgba(255,255,255,0.5)'}" stroke-width="6" stroke-linecap="round" stroke-dasharray="${CIRC_DAY.toFixed(1)}" stroke-dashoffset="${dashOffset.toFixed(1)}" style="transform:rotate(-90deg);transform-origin:45px 45px;transition:stroke-dashoffset .5s;"/></svg><div class="day-ring-center"><div class="day-ring-pct">${pct}%</div></div></div></div><div class="task-items" id="tasks-day-${key}">${tasks.map(t=>`<div class="task-item"><div class="task-chk${t.done?' done':''}" onclick="toggleDayTask('${key}',${t.id})">${t.done?'✓':''}</div><span class="task-txt${t.done?' done':''}" onclick="toggleDayTask('${key}',${t.id})">${escapeHtml(t.text)}</span><div class="task-actions"><button class="task-edit-btn" onclick="event.stopPropagation(); editTask('${key}',${t.id})">✎</button><button class="task-delete-btn" onclick="event.stopPropagation(); deleteTask('${key}',${t.id})">🗑</button></div></div>`).join('')}</div><button class="add-task-btn" onclick="openTaskMod('${key}')">+ Add task</button></div>`;
+    html+=`<div class="day-col${isToday?' today-day':''}"><div class="day-col-header"><div class="day-col-name">${WEEK_DAYS[i].substring(0,3)}</div><div class="day-col-date">${day.getDate()}/${day.getMonth()+1}</div></div><div class="day-ring-wrap"><div class="ring-pos"><svg width="80" height="80" viewBox="0 0 90 90"><circle cx="45" cy="45" r="38" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="6"/><circle cx="45" cy="45" r="38" fill="none" stroke="${isToday?'#00ff9d':'rgba(255,255,255,0.5)'}" stroke-width="6" stroke-linecap="round" stroke-dasharray="${CIRC_DAY.toFixed(1)}" stroke-dashoffset="${dashOffset.toFixed(1)}" style="transform:rotate(-90deg);transform-origin:45px 45px;transition:stroke-dashoffset .5s;"/></svg><div class="day-ring-center"><div class="day-ring-pct">${pct}%</div></div></div></div><div class="task-items" id="tasks-day-${key}">${tasks.map(t=>`<div class="task-item"><div class="task-chk${t.done?' done':''}" onclick="toggleDayTask('${key}',${t.id})">${t.done?'✓':''}</div><span class="task-txt${t.done?' done':''}" onclick="toggleDayTask('${key}',${t.id})">${escapeHtml(t.text)}</span><div class="task-actions"><button class="task-edit-btn" onclick="event.stopPropagation(); editTask('${key}',${t.id})">✎</button><button class="task-delete-btn" onclick="event.stopPropagation(); deleteTask('${key}',${t.id})">🗑</button></div></div>`).join('')}</div><button class="add-task-btn" onclick="openTaskMod('${key}')">+ Add task</button></div>`;
   }
   grid.innerHTML=html;
   updateOverallStats();
@@ -742,13 +805,13 @@ function openEvModalDate(dateKey,st){ openEvModal(); const p=dateKey.split('-');
 function editEvent(id,e){ if(e) e.stopPropagation(); const ev=events.find(x=>x.id===id); if(!ev) return; editingEvId=id; document.getElementById('ev-modal-title').textContent='Edit Event'; document.getElementById('ev-title').value=ev.title; const p=ev.date.split('-'); const d=new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2])); document.getElementById('ev-date').value=fmtDateISO(d); document.getElementById('ev-start').value=ev.start; document.getElementById('ev-end').value=ev.end; document.getElementById('ev-notes').value=ev.notes||''; selRepeatVal=ev.repeat; selEvColorVal=ev.color; document.querySelectorAll('.rep-opt').forEach(r=>r.classList.toggle('sel',r.dataset.r===ev.repeat)); document.querySelectorAll('.ev-cpick').forEach(c=>c.classList.toggle('sel',c.dataset.c===ev.color)); document.getElementById('ev-modal').classList.add('on'); }
 function saveEvent(){ const t=document.getElementById('ev-title').value.trim(); if(!t) return; const iso=document.getElementById('ev-date').value, dp=iso.split('-'), d=new Date(parseInt(dp[0]),parseInt(dp[1])-1,parseInt(dp[2])), key=fmtDate(d); if(editingEvId){ const ev=events.find(x=>x.id===editingEvId); if(ev){ ev.title=t; ev.date=key; ev.start=document.getElementById('ev-start').value; ev.end=document.getElementById('ev-end').value; ev.repeat=selRepeatVal; ev.color=selEvColorVal; ev.notes=document.getElementById('ev-notes').value; } } else { events.push({id:Date.now(),title:t,date:key,start:document.getElementById('ev-start').value,end:document.getElementById('ev-end').value,repeat:selRepeatVal,color:selEvColorVal,notes:document.getElementById('ev-notes').value}); } closeMod('ev-modal'); renderCalendar(); saveAllData(); }
 
-function setPomoMode(mode,minutes,btn){ document.querySelectorAll('.pomo-mode').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); if(pomoTimer) clearInterval(pomoTimer); pomoIsRunning=false; isStopwatchMode=false; pomoCurrentMode=mode; document.getElementById('custom-time-input').style.display='none'; if(mode==='custom'){ document.getElementById('custom-time-input').style.display='block'; return; } pomoTimeLeft=minutes*60; updatePomoDisplay(); document.getElementById('pomo-play-btn').innerHTML='&#9654;'; updatePomoRing(); saveAllData(); }
-function setStopwatchMode(){ if(pomoTimer) clearInterval(pomoTimer); pomoIsRunning=false; isStopwatchMode=true; pomoCurrentMode='stopwatch'; pomoTimeLeft=0; updatePomoDisplay(); document.getElementById('pomo-play-btn').innerHTML='&#9654;'; document.getElementById('custom-time-input').style.display='none'; document.querySelectorAll('.pomo-mode').forEach(b=>b.classList.remove('on')); const btn=Array.from(document.querySelectorAll('.pomo-mode')).find(b=>b.textContent==='Stopwatch'); if(btn) btn.classList.add('on'); saveAllData(); }
-function applyCustomTime(){ const mins=parseInt(document.getElementById('custom-minutes').value); if(!isNaN(mins) && mins>0 && mins<=180){ if(pomoTimer) clearInterval(pomoTimer); pomoIsRunning=false; isStopwatchMode=false; pomoTimeLeft=mins*60; updatePomoDisplay(); document.getElementById('pomo-play-btn').innerHTML='&#9654;'; document.getElementById('custom-time-input').style.display='none'; saveAllData(); } else alert('Enter 1-180 minutes'); }
+function setPomoMode(mode,minutes,btn){ document.querySelectorAll('.pomo-mode').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); if(pomoTimer) clearInterval(pomoTimer); pomoIsRunning=false; isStopwatchMode=false; pomoCurrentMode=mode; document.getElementById('custom-time-input').style.display='none'; if(mode==='custom'){ document.getElementById('custom-time-input').style.display='block'; return; } pomoTimeLeft=minutes*60; updatePomoDisplay(); document.getElementById('pomo-play-btn').innerHTML='▶'; updatePomoRing(); saveAllData(); }
+function setStopwatchMode(){ if(pomoTimer) clearInterval(pomoTimer); pomoIsRunning=false; isStopwatchMode=true; pomoCurrentMode='stopwatch'; pomoTimeLeft=0; updatePomoDisplay(); document.getElementById('pomo-play-btn').innerHTML='▶'; document.getElementById('custom-time-input').style.display='none'; document.querySelectorAll('.pomo-mode').forEach(b=>b.classList.remove('on')); const btn=Array.from(document.querySelectorAll('.pomo-mode')).find(b=>b.textContent==='Stopwatch'); if(btn) btn.classList.add('on'); saveAllData(); }
+function applyCustomTime(){ const mins=parseInt(document.getElementById('custom-minutes').value); if(!isNaN(mins) && mins>0 && mins<=180){ if(pomoTimer) clearInterval(pomoTimer); pomoIsRunning=false; isStopwatchMode=false; pomoTimeLeft=mins*60; updatePomoDisplay(); document.getElementById('pomo-play-btn').innerHTML='▶'; document.getElementById('custom-time-input').style.display='none'; saveAllData(); } else alert('Enter 1-180 minutes'); }
 function updatePomoDisplay(){ if(isStopwatchMode){ const h=Math.floor(pomoTimeLeft/3600), m=Math.floor((pomoTimeLeft%3600)/60), s=pomoTimeLeft%60; if(h>0) document.getElementById('pomo-time').textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; else document.getElementById('pomo-time').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; document.getElementById('pomo-phase').textContent='STOPWATCH'; } else { const m=Math.floor(pomoTimeLeft/60), s=pomoTimeLeft%60; document.getElementById('pomo-time').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; let txt='FOCUS'; if(pomoCurrentMode==='short') txt='SHORT BREAK'; else if(pomoCurrentMode==='long') txt='LONG BREAK'; else if(pomoCurrentMode==='custom') txt='CUSTOM'; document.getElementById('pomo-phase').textContent=txt; } updatePomoRing(); }
 function updatePomoRing(){ const circ=552.9, max=3600; let prog=0; if(isStopwatchMode) prog=Math.min(pomoTimeLeft/max,1); else{ let total=25*60; if(pomoCurrentMode==='short') total=5*60; else if(pomoCurrentMode==='long') total=15*60; else if(pomoCurrentMode==='custom'){ const cv=document.getElementById('custom-minutes'); if(cv&&cv.value) total=parseInt(cv.value)*60; } prog=(total-pomoTimeLeft)/total; } const ring=document.getElementById('pomo-ring'); if(ring) ring.style.strokeDashoffset=circ*(1-prog); }
-function togglePomo(){ if(pomoIsRunning){ if(pomoTimer) clearInterval(pomoTimer); pomoIsRunning=false; document.getElementById('pomo-play-btn').innerHTML='&#9654;'; saveAllData(); } else { pomoLastTick=Date.now(); pomoTimer=setInterval(()=>{ const now=Date.now(), elapsed=Math.floor((now-pomoLastTick)/1000); if(elapsed>=1){ pomoLastTick=now; if(!isStopwatchMode && pomoTimeLeft>0){ pomoTimeLeft=Math.max(0,pomoTimeLeft-elapsed); updatePomoDisplay(); if(pomoTimeLeft===0){ clearInterval(pomoTimer); pomoIsRunning=false; document.getElementById('pomo-play-btn').innerHTML='&#9654;'; if(pomoCurrentMode==='focus'){ pomoCycleCount++; const idx=Math.min(pomoCycleCount-1,3); const dot=document.querySelectorAll('.pdot')[idx]; if(dot) dot.classList.add('done'); if(pomoCycleCount>=4) setPomoMode('long',15,document.querySelectorAll('.pomo-mode')[2]); else setPomoMode('short',5,document.querySelectorAll('.pomo-mode')[1]); } saveAllData(); } } else if(isStopwatchMode){ pomoTimeLeft+=elapsed; updatePomoDisplay(); } saveAllData(); } },200); pomoIsRunning=true; document.getElementById('pomo-play-btn').innerHTML='&#9208;'; saveAllData(); } }
-function resetPomo(){ if(pomoTimer) clearInterval(pomoTimer); pomoIsRunning=false; if(isStopwatchMode) pomoTimeLeft=0; else{ if(pomoCurrentMode==='focus') pomoTimeLeft=25*60; else if(pomoCurrentMode==='short') pomoTimeLeft=5*60; else if(pomoCurrentMode==='long') pomoTimeLeft=15*60; else if(pomoCurrentMode==='custom'){ const cv=document.getElementById('custom-minutes'); if(cv&&cv.value) pomoTimeLeft=parseInt(cv.value)*60; else pomoTimeLeft=25*60; } else pomoTimeLeft=25*60; } updatePomoDisplay(); document.getElementById('pomo-play-btn').innerHTML='&#9654;'; saveAllData(); }
+function togglePomo(){ if(pomoIsRunning){ if(pomoTimer) clearInterval(pomoTimer); pomoIsRunning=false; document.getElementById('pomo-play-btn').innerHTML='▶'; saveAllData(); } else { pomoLastTick=Date.now(); pomoTimer=setInterval(()=>{ const now=Date.now(), elapsed=Math.floor((now-pomoLastTick)/1000); if(elapsed>=1){ pomoLastTick=now; if(!isStopwatchMode && pomoTimeLeft>0){ pomoTimeLeft=Math.max(0,pomoTimeLeft-elapsed); updatePomoDisplay(); if(pomoTimeLeft===0){ clearInterval(pomoTimer); pomoIsRunning=false; document.getElementById('pomo-play-btn').innerHTML='▶'; if(pomoCurrentMode==='focus'){ pomoCycleCount++; const idx=Math.min(pomoCycleCount-1,3); const dot=document.querySelectorAll('.pdot')[idx]; if(dot) dot.classList.add('done'); if(pomoCycleCount>=4) setPomoMode('long',15,document.querySelectorAll('.pomo-mode')[2]); else setPomoMode('short',5,document.querySelectorAll('.pomo-mode')[1]); } saveAllData(); } } else if(isStopwatchMode){ pomoTimeLeft+=elapsed; updatePomoDisplay(); } saveAllData(); } },200); pomoIsRunning=true; document.getElementById('pomo-play-btn').innerHTML='⏸'; saveAllData(); } }
+function resetPomo(){ if(pomoTimer) clearInterval(pomoTimer); pomoIsRunning=false; if(isStopwatchMode) pomoTimeLeft=0; else{ if(pomoCurrentMode==='focus') pomoTimeLeft=25*60; else if(pomoCurrentMode==='short') pomoTimeLeft=5*60; else if(pomoCurrentMode==='long') pomoTimeLeft=15*60; else if(pomoCurrentMode==='custom'){ const cv=document.getElementById('custom-minutes'); if(cv&&cv.value) pomoTimeLeft=parseInt(cv.value)*60; else pomoTimeLeft=25*60; } else pomoTimeLeft=25*60; } updatePomoDisplay(); document.getElementById('pomo-play-btn').innerHTML='▶'; saveAllData(); }
 function skipPomo(){ pomoTimeLeft=0; updatePomoDisplay(); saveAllData(); }
 function renderQuotes(){ const q=quotes[currentQuoteIdx]; document.getElementById('q-body').textContent=q.text; document.getElementById('q-auth').textContent=`— ${q.author}`; let dots=''; quotes.forEach((_,idx)=>{ dots+=`<div class="qdot ${idx===currentQuoteIdx?'on':''}" onclick="setQuote(${idx})"></div>`; }); document.getElementById('q-dots').innerHTML=dots; }
 function nextQ(){ currentQuoteIdx=(currentQuoteIdx+1)%quotes.length; renderQuotes(); saveAllData(); }
