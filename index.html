@@ -571,7 +571,7 @@ nav { display: none; }
       </div>
       
       <div class="habit-table-container">
-        <table class="habit-table">
+        <table class="habit-table" id="habit-table">
           <thead id="table-header"></thead>
           <tbody id="table-body"></tbody>
         </table>
@@ -815,40 +815,41 @@ function renderTracker(){
   }
   weeks = weeks.filter(w => w && w.length > 0);
   
-  let theadHtml = '<table class="habit-table"><thead>';
-  theadHtml += '<tr><th class="habit-name-cell">HABITS</th>';
+  // Build table HTML
+  let tableHtml = '<thead><tr>';
+  tableHtml += '<th class="habit-name-cell">HABITS</th>';
   for(let wi=0; wi<weeks.length; wi++){
     const weekDays = weeks[wi];
     const weekClass = wi===0?'week-header-week1':wi===1?'week-header-week2':wi===2?'week-header-week3':'week-header-week4';
-    theadHtml += `<th colspan="${weekDays.length}" class="week-header ${weekClass}">WEEK ${wi+1}</th>`;
+    tableHtml += `<th colspan="${weekDays.length}" class="week-header ${weekClass}">WEEK ${wi+1}</th>`;
   }
-  theadHtml += '</tr><tr><th class="habit-name-cell"></th>';
+  tableHtml += '</tr><tr><th class="habit-name-cell"></th>';
   for(let wi=0; wi<weeks.length; wi++){
     for(let d of weeks[wi]){
       const date = new Date(y,m,d);
       const dow = date.getDay();
       const isToday = d === todayKey;
-      theadHtml += `<th class="day-header ${isToday ? 'today' : ''}"><div class="day-name">${DAYS_SHORT[dow]}</div><div class="day-num">${d}</div></th>`;
+      tableHtml += `<th class="day-header ${isToday ? 'today' : ''}"><div class="day-name">${DAYS_SHORT[dow]}</div><div class="day-num">${d}</div></th>`;
     }
   }
-  theadHtml += '</tr></thead><tbody>';
+  tableHtml += '</tr></thead><tbody>';
   
   habits.forEach((habit, habitIdx) => {
-    theadHtml += '<tr>';
-    theadHtml += `<td class="habit-name-cell"><div class="habit-name-content"><div class="habit-dot" style="background:${habit.color};"></div><div class="habit-name-text">${escapeHtml(habit.name)}</div><div class="habit-pct-badge">${Math.round((Object.values(habit.checks).filter(v=>v===1).length/dim)*100)||0}%</div><div class="habit-actions-cell"><button class="habit-edit" onclick="event.stopPropagation(); editHabit(${habitIdx})">✎</button><button class="habit-delete" onclick="event.stopPropagation(); deleteHabit(${habitIdx})">🗑</button></div></div></td>`;
+    tableHtml += '<tr>';
+    tableHtml += `<td class="habit-name-cell"><div class="habit-name-content"><div class="habit-dot" style="background:${habit.color};"></div><div class="habit-name-text">${escapeHtml(habit.name)}</div><div class="habit-pct-badge">${Math.round((Object.values(habit.checks).filter(v=>v===1).length/dim)*100)||0}%</div><div class="habit-actions-cell"><button class="habit-edit" onclick="event.stopPropagation(); editHabit(${habitIdx})">✎</button><button class="habit-delete" onclick="event.stopPropagation(); deleteHabit(${habitIdx})">🗑</button></div></div></td>`;
     for(let wi=0; wi<weeks.length; wi++){
       for(let d of weeks[wi]){
         const key = `${y}-${m+1}-${d}`;
         const done = habit.checks[key] === 1;
         const isToday = d === todayKey;
-        theadHtml += `<td class="check-cell ${isToday ? 'today-cell' : ''}" onclick="toggleCheck(${habit.id},${y},${m},${d})"><div class="check-box ${done ? 'done' : ''}" style="${done ? `border-color:${habit.color};background:rgba(${hexToRgb(habit.color)},0.15);` : ''}">${done ? `<svg width="16" height="16" viewBox="0 0 10 10"><polyline points="1.5,5 4,7.5 8.5,2.5" fill="none" stroke="${habit.color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>` : ''}</div></td>`;
+        tableHtml += `<td class="check-cell ${isToday ? 'today-cell' : ''}" onclick="toggleCheck(${habit.id},${y},${m},${d})"><div class="check-box ${done ? 'done' : ''}" style="${done ? `border-color:${habit.color};background:rgba(${hexToRgb(habit.color)},0.15);` : ''}">${done ? `<svg width="16" height="16" viewBox="0 0 10 10"><polyline points="1.5,5 4,7.5 8.5,2.5" fill="none" stroke="${habit.color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>` : ''}</div></td>`;
       }
     }
-    theadHtml += '</tr>';
+    tableHtml += '</tr>';
   });
-  theadHtml += '</tbody></table>';
-  document.getElementById('table-header').innerHTML = '';
-  document.getElementById('grid-inner').innerHTML = theadHtml;
+  tableHtml += '</tbody>';
+  
+  document.getElementById('habit-table').innerHTML = tableHtml;
   
   let analysisHtml = '';
   habits.forEach(h=>{ let done=0; for(let d=1;d<=dim;d++){ const key=`${y}-${m+1}-${d}`; if(h.checks[key]===1) done++; } const pct=Math.round(done/dim*100)||0;
