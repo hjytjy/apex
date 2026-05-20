@@ -256,23 +256,23 @@ nav { display: none; }
 .btn-save { background: var(--accent); color: #000; border: none; border-radius: 10px; padding: 8px 18px; font-size: 12px; font-weight: 700; cursor: pointer; }
 .frow { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-/* TASK PAGE - REDESIGNED */
+/* TASK PAGE */
 .task-wrap { padding: 20px 24px; max-width: 1000px; margin: 0 auto; }
-.task-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-  gap: 15px;
-}
-.task-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 2px; color: var(--text); }
-.task-stats { display: flex; gap: 20px; }
-.task-stat { background: var(--s2); padding: 8px 20px; border-radius: 12px; text-align: center; }
-.task-stat-value { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--accent); line-height: 1; }
-.task-stat-label { font-size: 9px; color: var(--text3); margin-top: 4px; }
+.task-top { display: grid; grid-template-columns: 260px 1fr; gap: 20px; margin-bottom: 24px; }
+.task-info-card { background: var(--s1); border: 1px solid var(--b1); border-radius: 16px; padding: 20px; text-align: center; }
+.week-date-label { font-size: 10px; color: var(--text3); font-family: 'JetBrains Mono', monospace; margin-bottom: 8px; }
+.week-date-val { background: var(--accent); color: #000; border-radius: 10px; padding: 8px 12px; font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; text-align: center; margin-bottom: 16px; }
+.task-overall-lbl { font-size: 10px; color: var(--text3); font-family: 'JetBrains Mono', monospace; margin-bottom: 8px; }
+.ring-pos { position: relative; display: flex; justify-content: center; }
+.day-ring-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+.score-pct { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--text); line-height: 1; }
+.overall-chart-card { background: var(--s1); border: 1px solid var(--b1); border-radius: 16px; padding: 20px; }
+.oc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+.oc-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text2); }
+.oc-sub { font-size: 10px; color: var(--text3); }
+.oc-chart-wrap { position: relative; height: 120px; }
 
-/* Task Day Cards - Clean Layout */
+/* Task Day Cards */
 .tasks-container {
   display: flex;
   flex-direction: column;
@@ -515,9 +515,8 @@ nav { display: none; }
   
   .month-header { flex-direction: column; align-items: flex-start; }
   .month-stats { width: 100%; justify-content: space-between; }
+  .task-top { grid-template-columns: 1fr; }
   
-  .task-header { flex-direction: column; align-items: flex-start; }
-  .task-stats { width: 100%; justify-content: space-between; }
   .task-item { padding: 10px 12px; }
   .task-text { font-size: 13px; }
   
@@ -592,11 +591,24 @@ nav { display: none; }
 
   <div class="page" id="page-tasks">
     <div class="task-wrap">
-      <div class="task-header">
-        <h1>📋 Weekly Tasks</h1>
-        <div class="task-stats">
-          <div class="task-stat"><div class="task-stat-value" id="total-tasks-stat">0</div><div class="task-stat-label">TOTAL</div></div>
-          <div class="task-stat"><div class="task-stat-value" id="completed-tasks-stat">0</div><div class="task-stat-label">DONE</div></div>
+      <div class="task-top">
+        <div class="task-info-card">
+          <div class="week-date-label">WEEK START</div>
+          <div class="week-date-val" id="task-week-start"></div>
+          <div class="task-overall-lbl">OVERALL COMPLETION</div>
+          <div style="display:flex;justify-content:center;margin-top:8px;">
+            <div class="ring-pos">
+              <svg width="100" height="100" viewBox="0 0 110 110">
+                <circle cx="55" cy="55" r="46" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8"/>
+                <circle id="overall-ring" cx="55" cy="55" r="46" fill="none" stroke="#00ff9d" stroke-width="8" stroke-linecap="round" stroke-dasharray="289" stroke-dashoffset="289" style="transform:rotate(-90deg);transform-origin:55px 55px;transition:stroke-dashoffset .6s;"/>
+              </svg>
+              <div class="day-ring-center"><div class="score-pct" id="overall-pct">0%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="overall-chart-card">
+          <div class="oc-header"><div><div class="oc-title">WEEK COMPLETION BY DAY</div><div class="oc-sub">Daily task done rate</div></div><span class="chart-badge badge-up" id="week-chart-badge">0/0 done</span></div>
+          <div class="oc-chart-wrap"><canvas id="weekBarChart"></canvas></div>
         </div>
       </div>
       <div class="tasks-container" id="tasks-container"></div>
@@ -803,14 +815,14 @@ function renderTracker(){
   }
   weeks = weeks.filter(w => w && w.length > 0);
   
-  let theadHtml = '<tr>';
+  let theadHtml = '<table>';
   theadHtml += '<th class="habit-name-cell">HABITS</th>';
   for(let wi=0; wi<weeks.length; wi++){
     const weekDays = weeks[wi];
     const weekClass = wi===0?'week-header-week1':wi===1?'week-header-week2':wi===2?'week-header-week3':'week-header-week4';
     theadHtml += `<th colspan="${weekDays.length}" class="week-header ${weekClass}">WEEK ${wi+1}</th>`;
   }
-  theadHtml += '<tr>';
+  theadHtml += '</tr>';
   theadHtml += '<th class="habit-name-cell"></th>';
   for(let wi=0; wi<weeks.length; wi++){
     for(let d of weeks[wi]){
@@ -820,7 +832,7 @@ function renderTracker(){
       theadHtml += `<th class="day-header ${isToday ? 'today' : ''}"><div class="day-name">${DAYS_SHORT[dow]}</div><div class="day-num">${d}</div></th>`;
     }
   }
-  theadHtml += '</tr>';
+  theadHtml += '</table>';
   document.getElementById('table-header').innerHTML = theadHtml;
   
   let tbodyHtml = '';
@@ -835,7 +847,7 @@ function renderTracker(){
         tbodyHtml += `<td class="check-cell ${isToday ? 'today-cell' : ''}" onclick="toggleCheck(${habit.id},${y},${m},${d})"><div class="check-box ${done ? 'done' : ''}" style="${done ? `border-color:${habit.color};background:rgba(${hexToRgb(habit.color)},0.15);` : ''}">${done ? `<svg width="16" height="16" viewBox="0 0 10 10"><polyline points="1.5,5 4,7.5 8.5,2.5" fill="none" stroke="${habit.color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>` : ''}</div></td>`;
       }
     }
-    tbodyHtml += '<tr>';
+    tbodyHtml += '</tr>';
   });
   document.getElementById('table-body').innerHTML = tbodyHtml;
   
@@ -889,38 +901,52 @@ function updateTaskSelector() {
   else{ sel.value=""; document.getElementById('pomo-task-name').textContent='— select a task —'; }
 }
 
-function renderTasks(){
+function updateOverallStats(){
+  const ws=getWeekStart(); let done=0,total=0, rates=[];
+  for(let i=0;i<7;i++){ const key=fmtDateISO(addDays(ws,i)), tasks=allTasks[key]||[], d=tasks.filter(t=>t.done).length; done+=d; total+=tasks.length; rates.push(tasks.length>0?Math.round(d/tasks.length*100):0); }
+  const pct=total>0?Math.round(done/total*100):0, circ=289; const ring=document.getElementById('overall-ring'); if(ring) ring.style.strokeDashoffset=(circ*(1-pct/100)).toFixed(1);
+  document.getElementById('overall-pct').textContent=pct+'%'; document.getElementById('week-chart-badge').textContent=`${done}/${total} done`;
+  if(weekBarChartInst){ weekBarChartInst.data.datasets[0].data=rates; weekBarChartInst.update(); }
+  else{ const ctx=document.getElementById('weekBarChart').getContext('2d');
+    weekBarChartInst=new Chart(ctx,{type:'bar',data:{labels:['S','M','T','W','T','F','S'],datasets:[{data:rates,backgroundColor:'rgba(255,255,255,0.2)',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:100,ticks:{color:'#3a3a58',font:{size:8}}}}}}); }
+}
+
+function renderTasks() {
   const ws = getWeekStart();
   let days = [];
-  for(let i=0; i<7; i++){
+  for(let i = 0; i < 7; i++) {
     days.push(addDays(ws, i));
   }
   
-  // Sort days so current day appears first, then future days, then past days
-  const todayIndex = days.findIndex(d => d.toDateString() === today.toDateString());
-  if(todayIndex > 0){
-    const reordered = [...days];
-    const todayItem = reordered.splice(todayIndex, 1)[0];
-    const pastDays = reordered.filter(d => d < today);
-    const futureDays = reordered.filter(d => d > today);
-    days = [todayItem, ...futureDays, ...pastDays];
+  // Order: Today first, then future days, then past days (after today)
+  const todayDate = today;
+  const todayIndex = days.findIndex(d => d.toDateString() === todayDate.toDateString());
+  
+  let orderedDays = [];
+  if(todayIndex !== -1) {
+    // Add today
+    orderedDays.push(days[todayIndex]);
+    // Add future days (after today)
+    for(let i = todayIndex + 1; i < days.length; i++) {
+      orderedDays.push(days[i]);
+    }
+    // Add past days (before today)
+    for(let i = 0; i < todayIndex; i++) {
+      orderedDays.push(days[i]);
+    }
+  } else {
+    orderedDays = days;
   }
   
-  let totalTasks = 0;
-  let completedTasks = 0;
-  
   let html = '<div class="tasks-container">';
-  for(let day of days){
+  for(let day of orderedDays) {
     const dateKey = fmtDateISO(day);
     const tasks = allTasks[dateKey] || [];
     const doneCount = tasks.filter(t => t.done).length;
-    const isToday = day.toDateString() === today.toDateString();
-    totalTasks += tasks.length;
-    completedTasks += doneCount;
+    const isToday = day.toDateString() === todayDate.toDateString();
     
     const dayName = WEEK_DAYS[day.getDay()];
     const dateStr = `${day.getDate()}/${day.getMonth()+1}`;
-    const progressPct = tasks.length > 0 ? Math.round((doneCount / tasks.length) * 100) : 0;
     
     html += `
       <div class="task-day-card ${isToday ? 'today' : ''}">
@@ -956,20 +982,10 @@ function renderTasks(){
   html += '</div>';
   
   document.getElementById('tasks-container').innerHTML = html;
-  document.getElementById('total-tasks-stat').textContent = totalTasks;
-  document.getElementById('completed-tasks-stat').textContent = completedTasks;
+  updateOverallStats();
   scrollToCurrentTaskDay();
 }
 
-function updateOverallStats(){
-  const ws=getWeekStart(); let done=0,total=0, rates=[];
-  for(let i=0;i<7;i++){ const key=fmtDateISO(addDays(ws,i)), tasks=allTasks[key]||[], d=tasks.filter(t=>t.done).length; done+=d; total+=tasks.length; rates.push(tasks.length>0?Math.round(d/tasks.length*100):0); }
-  const pct=total>0?Math.round(done/total*100):0, circ=289; const ring=document.getElementById('overall-ring'); if(ring) ring.style.strokeDashoffset=(circ*(1-pct/100)).toFixed(1);
-  document.getElementById('overall-pct').textContent=pct+'%'; document.getElementById('week-chart-badge').textContent=`${done}/${total} done`;
-  if(weekBarChartInst){ weekBarChartInst.data.datasets[0].data=rates; weekBarChartInst.update(); }
-  else{ const ctx=document.getElementById('weekBarChart').getContext('2d');
-    weekBarChartInst=new Chart(ctx,{type:'bar',data:{labels:['S','M','T','W','T','F','S'],datasets:[{data:rates,backgroundColor:'rgba(255,255,255,0.2)',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:100,ticks:{color:'#3a3a58',font:{size:8}}}}}}); }
-}
 function openTaskMod(key){ document.getElementById('task-day-idx').value=key; document.getElementById('task-input').value=''; document.getElementById('task-modal').classList.add('on'); }
 function addTask(){ const txt=document.getElementById('task-input').value.trim(), key=document.getElementById('task-day-idx').value; if(!txt) return; if(!allTasks[key]) allTasks[key]=[]; allTasks[key].push({id:Date.now(),text:txt,done:false}); closeMod('task-modal'); renderTasks(); saveAllData(); updateTaskSelector(); }
 function toggleDayTask(key,id){ const t=allTasks[key]?.find(x=>x.id===id); if(t){ t.done=!t.done; renderTasks(); saveAllData(); updateTaskSelector(); } }
