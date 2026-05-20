@@ -816,21 +816,12 @@ function renderTracker(){
   weeks = weeks.filter(w => w && w.length > 0);
   
   // Build table HTML
-  let tableHtml = '<thead><tr>';
+  let tableHtml = '<thead><table>';
   tableHtml += '<th class="habit-name-cell">HABITS</th>';
   for(let wi=0; wi<weeks.length; wi++){
     const weekDays = weeks[wi];
     const weekClass = wi===0?'week-header-week1':wi===1?'week-header-week2':wi===2?'week-header-week3':'week-header-week4';
     tableHtml += `<th colspan="${weekDays.length}" class="week-header ${weekClass}">WEEK ${wi+1}</th>`;
-  }
-  tableHtml += '</tr><tr><th class="habit-name-cell"></th>';
-  for(let wi=0; wi<weeks.length; wi++){
-    for(let d of weeks[wi]){
-      const date = new Date(y,m,d);
-      const dow = date.getDay();
-      const isToday = d === todayKey;
-      tableHtml += `<th class="day-header ${isToday ? 'today' : ''}"><div class="day-name">${DAYS_SHORT[dow]}</div><div class="day-num">${d}</div></th>`;
-    }
   }
   tableHtml += '</tr></thead><tbody>';
   
@@ -928,22 +919,10 @@ function renderTasks() {
     }
   }
   
-  // Reorder: Today first, then days after today (future), then days before today (past)
-  let orderedDays = [];
-  if(todayIndex !== -1) {
-    // Add today
-    orderedDays.push(days[todayIndex]);
-    // Add future days (after today)
-    for(let i = todayIndex + 1; i < days.length; i++) {
-      orderedDays.push(days[i]);
-    }
-    // Add past days (before today)
-    for(let i = 0; i < todayIndex; i++) {
-      orderedDays.push(days[i]);
-    }
-  } else {
-    orderedDays = days;
-  }
+  // Reorder: Keep same week order (Monday to Sunday) but scroll to today
+  // For display, we keep the natural order (Mon, Tue, Wed, Thu, Fri, Sat, Sun)
+  // and then scroll to today's card
+  let orderedDays = days;
   
   let html = '<div class="tasks-container">';
   for(let day of orderedDays) {
@@ -956,7 +935,7 @@ function renderTasks() {
     const dateStr = `${day.getDate()}/${day.getMonth()+1}`;
     
     html += `
-      <div class="task-day-card ${isToday ? 'today' : ''}">
+      <div class="task-day-card ${isToday ? 'today' : ''}" id="task-day-${dateKey}">
         <div class="task-day-header">
           <div class="task-day-name">${dayName}</div>
           <div class="task-day-stats">
@@ -990,7 +969,16 @@ function renderTasks() {
   
   document.getElementById('tasks-container').innerHTML = html;
   updateOverallStats();
-  scrollToCurrentTaskDay();
+  
+  // Scroll to today's card instead of reordering
+  if(todayIndex !== -1) {
+    setTimeout(() => {
+      const todayCard = document.querySelector('.task-day-card.today');
+      if(todayCard){
+        todayCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  }
 }
 
 function openTaskMod(key){ document.getElementById('task-day-idx').value=key; document.getElementById('task-input').value=''; document.getElementById('task-modal').classList.add('on'); }
