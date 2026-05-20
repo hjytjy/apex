@@ -815,15 +815,14 @@ function renderTracker(){
   }
   weeks = weeks.filter(w => w && w.length > 0);
   
-  let theadHtml = '<table>';
-  theadHtml += '<th class="habit-name-cell">HABITS</th>';
+  let theadHtml = '<table class="habit-table"><thead>';
+  theadHtml += '<tr><th class="habit-name-cell">HABITS</th>';
   for(let wi=0; wi<weeks.length; wi++){
     const weekDays = weeks[wi];
     const weekClass = wi===0?'week-header-week1':wi===1?'week-header-week2':wi===2?'week-header-week3':'week-header-week4';
     theadHtml += `<th colspan="${weekDays.length}" class="week-header ${weekClass}">WEEK ${wi+1}</th>`;
   }
-  theadHtml += '</tr>';
-  theadHtml += '<th class="habit-name-cell"></th>';
+  theadHtml += '</tr><tr><th class="habit-name-cell"></th>';
   for(let wi=0; wi<weeks.length; wi++){
     for(let d of weeks[wi]){
       const date = new Date(y,m,d);
@@ -832,24 +831,24 @@ function renderTracker(){
       theadHtml += `<th class="day-header ${isToday ? 'today' : ''}"><div class="day-name">${DAYS_SHORT[dow]}</div><div class="day-num">${d}</div></th>`;
     }
   }
-  theadHtml += '</table>';
-  document.getElementById('table-header').innerHTML = theadHtml;
+  theadHtml += '</tr></thead><tbody>';
   
-  let tbodyHtml = '';
   habits.forEach((habit, habitIdx) => {
-    tbodyHtml += '<tr>';
-    tbodyHtml += `<td class="habit-name-cell"><div class="habit-name-content"><div class="habit-dot" style="background:${habit.color};"></div><div class="habit-name-text">${escapeHtml(habit.name)}</div><div class="habit-pct-badge">${Math.round((Object.values(habit.checks).filter(v=>v===1).length/dim)*100)||0}%</div><div class="habit-actions-cell"><button class="habit-edit" onclick="event.stopPropagation(); editHabit(${habitIdx})">✎</button><button class="habit-delete" onclick="event.stopPropagation(); deleteHabit(${habitIdx})">🗑</button></div></div></td>`;
+    theadHtml += '<tr>';
+    theadHtml += `<td class="habit-name-cell"><div class="habit-name-content"><div class="habit-dot" style="background:${habit.color};"></div><div class="habit-name-text">${escapeHtml(habit.name)}</div><div class="habit-pct-badge">${Math.round((Object.values(habit.checks).filter(v=>v===1).length/dim)*100)||0}%</div><div class="habit-actions-cell"><button class="habit-edit" onclick="event.stopPropagation(); editHabit(${habitIdx})">✎</button><button class="habit-delete" onclick="event.stopPropagation(); deleteHabit(${habitIdx})">🗑</button></div></div></td>`;
     for(let wi=0; wi<weeks.length; wi++){
       for(let d of weeks[wi]){
         const key = `${y}-${m+1}-${d}`;
         const done = habit.checks[key] === 1;
         const isToday = d === todayKey;
-        tbodyHtml += `<td class="check-cell ${isToday ? 'today-cell' : ''}" onclick="toggleCheck(${habit.id},${y},${m},${d})"><div class="check-box ${done ? 'done' : ''}" style="${done ? `border-color:${habit.color};background:rgba(${hexToRgb(habit.color)},0.15);` : ''}">${done ? `<svg width="16" height="16" viewBox="0 0 10 10"><polyline points="1.5,5 4,7.5 8.5,2.5" fill="none" stroke="${habit.color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>` : ''}</div></td>`;
+        theadHtml += `<td class="check-cell ${isToday ? 'today-cell' : ''}" onclick="toggleCheck(${habit.id},${y},${m},${d})"><div class="check-box ${done ? 'done' : ''}" style="${done ? `border-color:${habit.color};background:rgba(${hexToRgb(habit.color)},0.15);` : ''}">${done ? `<svg width="16" height="16" viewBox="0 0 10 10"><polyline points="1.5,5 4,7.5 8.5,2.5" fill="none" stroke="${habit.color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>` : ''}</div></td>`;
       }
     }
-    tbodyHtml += '</tr>';
+    theadHtml += '</tr>';
   });
-  document.getElementById('table-body').innerHTML = tbodyHtml;
+  theadHtml += '</tbody></table>';
+  document.getElementById('table-header').innerHTML = '';
+  document.getElementById('grid-inner').innerHTML = theadHtml;
   
   let analysisHtml = '';
   habits.forEach(h=>{ let done=0; for(let d=1;d<=dim;d++){ const key=`${y}-${m+1}-${d}`; if(h.checks[key]===1) done++; } const pct=Math.round(done/dim*100)||0;
@@ -918,10 +917,17 @@ function renderTasks() {
     days.push(addDays(ws, i));
   }
   
-  // Order: Today first, then future days, then past days (after today)
+  // Find today's index
   const todayDate = today;
-  const todayIndex = days.findIndex(d => d.toDateString() === todayDate.toDateString());
+  let todayIndex = -1;
+  for(let i = 0; i < days.length; i++) {
+    if(days[i].toDateString() === todayDate.toDateString()) {
+      todayIndex = i;
+      break;
+    }
+  }
   
+  // Reorder: Today first, then days after today (future), then days before today (past)
   let orderedDays = [];
   if(todayIndex !== -1) {
     // Add today
